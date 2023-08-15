@@ -2,37 +2,37 @@ import Swiper from 'swiper';
 import { Navigation } from 'swiper/modules';
 
 export const aboutSwiper = () => {
-    // Initialize Swiper
-    var mySwiper = new Swiper('#alternating', {
-        // If we need pagination
-        modules: [Navigation],
+  // Initialize Swiper
+  var mySwiper = new Swiper('#alternating', {
+    // If we need pagination
+    modules: [Navigation],
+    slidesPerView: 1.1,
+    spaceBetween: 32,
+    breakpoints: {
+      // when window width is >= 479px
+      479: {
         slidesPerView: 1.1,
         spaceBetween: 32,
-        breakpoints: {
-            // when window width is >= 479px
-            479: {
-                slidesPerView: 1.1,
-                spaceBetween: 32
-            },
-            // when window width is >= 767px
-            767: {
-                slidesPerView: 1.5,
-                spaceBetween: 32
-            },
-            // when window width is >= 1279px
-            1279: {
-                slidesPerView: 2.25,
-                spaceBetween: 32
-            }
-        },
-        // Navigation arrows
-        navigation: {
-            nextEl: '.swiper-button-next-1',
-            prevEl: '.swiper-button-prev-1',
-        },
-        keyboard: {
-            enabled: true,
-            onlyInViewport: true,
-        },
-    })
-}
+      },
+      // when window width is >= 767px
+      767: {
+        slidesPerView: 1.5,
+        spaceBetween: 32,
+      },
+      // when window width is >= 1279px
+      1279: {
+        slidesPerView: 2.25,
+        spaceBetween: 32,
+      },
+    },
+    // Navigation arrows
+    navigation: {
+      nextEl: '.swiper-button-next-1',
+      prevEl: '.swiper-button-prev-1',
+    },
+    keyboard: {
+      enabled: true,
+      onlyInViewport: true,
+    },
+  });
+};

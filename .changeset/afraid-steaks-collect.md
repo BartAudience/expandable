@@ -2,4 +2,4 @@
 '@zuid/expendable': minor
 ---
 
-Updated all files
+updated filename

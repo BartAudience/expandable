@@ -1,8 +1,10 @@
 import Swiper from 'swiper';
+import { Autoplay } from 'swiper/modules';
 
 export const clientCasesSwiper = () => {
   // Initialize Swiper
   var mySwiper = new Swiper('#cases-clients', {
+    modules: [Autoplay],
     slidesPerView: 1.1,
     spaceBetween: 40,
     speed: 3000,

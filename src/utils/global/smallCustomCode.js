@@ -1,3 +1,4 @@
+
 export const smallCustomCode = () => {
   //Toggle line visibility in the features tabs component
   $('.features-tabs_link').on('click', function () {
@@ -62,4 +63,34 @@ export const smallCustomCode = () => {
   $('.form_input').on('focus', function () {
     $(this).siblings('.form_label').addClass('is-focus');
   });
+
+  // menu items hover fix
+  $(document).ready(function () {
+    let isMenuOpen = false;
+
+    $('#menu-button').click(function () {
+      isMenuOpen = !isMenuOpen;
+
+      if (isMenuOpen) {
+        $('.button.is-text-menu.w-inline-block').each(function () {
+          $(this).css('color', '#fff');
+          $('.button_underline', this).css('background-color', '#fff');
+          $(this).off('mouseover mouseout'); // Remove the mouseover/mouseout listeners
+        });
+      } else {
+        $('.button.is-text-menu.w-inline-block').each(function () {
+          $(this).on('mouseover', function () {
+            $(this).css('color', '#bc9753');
+            $('.button_underline', this).css('background-color', '#bc9753');
+          });
+
+          $(this).on('mouseout', function () {
+            $(this).css('color', '#292929');
+            $('.button_underline', this).css('background-color', 'transparent');
+          });
+        });
+      }
+    });
+  });
+
 };

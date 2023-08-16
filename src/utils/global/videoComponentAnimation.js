@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
@@ -8,12 +7,11 @@ export const videoComponentAnimation = (name) => {
     markers: false,
   });
 
-  $('.home-video_component').each(function (index, element) {
-    let triggerElement = element;
-    let targetElement = $('.home-video_wrapper');
+  const animateElement = (triggerSelector, targetSelector) => {
+    const triggerElement = document.querySelector(triggerSelector);
+    const targetElement = document.querySelector(targetSelector);
 
-    // Timeline for growing animation
-    let tlGrow = gsap.timeline({
+    const tlGrow = gsap.timeline({
       scrollTrigger: {
         trigger: triggerElement,
         start: 'top top',
@@ -39,5 +37,8 @@ export const videoComponentAnimation = (name) => {
         },
         '+=2'
       );
-  });
+  };
+
+  animateElement('.home-video_component', '.home-video_wrapper');
+  animateElement('.logo-header_track', '.logo-header_footage');
 };

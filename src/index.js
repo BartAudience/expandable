@@ -11,6 +11,7 @@ import { hoverAnimationCard } from './utils/markets-page/hoverAnimationCard';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
+
   //global
   videoComponentAnimation();
   lenisScroll();

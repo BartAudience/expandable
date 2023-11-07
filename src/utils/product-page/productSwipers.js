@@ -27,8 +27,8 @@ export const productSwipers = () => {
     },
     // Navigation arrows
     navigation: {
-      nextEl: '.swiper-button-next-1',
-      prevEl: '.swiper-button-prev-1',
+      nextEl: '.swiper-next-1',
+      prevEl: '.swiper-prev-1',
     },
     keyboard: {
       enabled: true,
@@ -60,8 +60,8 @@ export const productSwipers = () => {
     },
     // Navigation arrows
     navigation: {
-      nextEl: '.swiper-button-next-2',
-      prevEl: '.swiper-button-prev-2',
+      nextEl: '.swiper-next-2',
+      prevEl: '.swiper-prev-2',
     },
     keyboard: {
       enabled: true,
@@ -76,8 +76,8 @@ export const productSwipers = () => {
     spaceBetween: 32,
     // Navigation arrows
     navigation: {
-      nextEl: '.swiper-button-next-3',
-      prevEl: '.swiper-button-prev-3',
+      nextEl: '.swiper-next-3',
+      prevEl: '.swiper-prev-3',
     },
     keyboard: {
       enabled: true,

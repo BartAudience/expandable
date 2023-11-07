@@ -27,8 +27,8 @@ export const aboutSwiper = () => {
     },
     // Navigation arrows
     navigation: {
-      nextEl: '.swiper-button-next-1',
-      prevEl: '.swiper-button-prev-1',
+      nextEl: '.swiper-next-1',
+      prevEl: '.swiper-prev-1',
     },
     keyboard: {
       enabled: true,

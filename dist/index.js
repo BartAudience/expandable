@@ -4890,8 +4890,8 @@
       },
       // Navigation arrows
       navigation: {
-        nextEl: ".swiper-button-next-1",
-        prevEl: ".swiper-button-prev-1"
+        nextEl: ".swiper-next-1",
+        prevEl: ".swiper-prev-1"
       },
       keyboard: {
         enabled: true,
@@ -9240,13 +9240,13 @@
         el: ".swiper-pagination",
         clickable: true,
         renderBullet: function(index, className) {
-          return '<a class="' + className + '"> <div class="button_text"> ' + menu[index] + ' <div class="button_underline" style="width: 0%; height: 1px;"></div> </div> </a>';
+          return '<a class="swiper-pagination-button ' + className + '"> <div class="button_text"> ' + menu[index] + ' <div class="button_underline" style="width: 0%; height: 1px;"></div> </div> </a>';
         }
       },
       // Navigation arrows
       navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev"
+        nextEl: ".swiper-next",
+        prevEl: ".swiper-prev"
       },
       keyboard: {
         enabled: true,
@@ -9287,6 +9287,7 @@
     } else {
       $(".swiper-pagination-bullet").css("width", "auto");
     }
+    $(".swiper-horizontal").css("touch-action", "pan-y");
     $(".markets-slider_image-item").removeClass("is-hover");
     $(".markets-slider_image").removeClass("is-hover");
     $(".button-box_markets-slider").on("mouseenter mouseleave", function() {
@@ -11785,8 +11786,8 @@
       },
       // Navigation arrows
       navigation: {
-        nextEl: ".swiper-button-next-1",
-        prevEl: ".swiper-button-prev-1"
+        nextEl: ".swiper-next-1",
+        prevEl: ".swiper-prev-1"
       },
       keyboard: {
         enabled: true,
@@ -11816,8 +11817,8 @@
       },
       // Navigation arrows
       navigation: {
-        nextEl: ".swiper-button-next-2",
-        prevEl: ".swiper-button-prev-2"
+        nextEl: ".swiper-next-2",
+        prevEl: ".swiper-prev-2"
       },
       keyboard: {
         enabled: true,
@@ -11830,8 +11831,8 @@
       spaceBetween: 32,
       // Navigation arrows
       navigation: {
-        nextEl: ".swiper-button-next-3",
-        prevEl: ".swiper-button-prev-3"
+        nextEl: ".swiper-next-3",
+        prevEl: ".swiper-prev-3"
       },
       keyboard: {
         enabled: true,

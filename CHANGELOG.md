@@ -1,5 +1,11 @@
 # @zuid/expendable
 
+## 0.3.2
+
+### Patch Changes
+
+- 0aa973d: small fixes
+
 ## 0.3.1
 
 ### Patch Changes

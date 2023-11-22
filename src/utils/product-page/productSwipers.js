@@ -39,6 +39,7 @@ export const productSwipers = () => {
   // Initialize Swiper
   var mySwiper = new Swiper('#applications', {
     // If we need pagination
+    modules: [Navigation, Pagination],
     slidesPerView: 1.1,
     spaceBetween: 32,
     breakpoints: {
@@ -72,6 +73,7 @@ export const productSwipers = () => {
   // Initialize Swiper
   var mySwiper = new Swiper('#cases', {
     // If we need pagination
+    modules: [Navigation, Pagination],
     slidesPerView: 1.1,
     spaceBetween: 32,
     // Navigation arrows

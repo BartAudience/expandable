@@ -4868,7 +4868,7 @@
   var aboutSwiper = () => {
     var mySwiper = new Swiper("#alternating", {
       // If we need pagination
-      modules: [Navigation],
+      modules: [Navigation, Pagination],
       slidesPerView: 1.1,
       spaceBetween: 32,
       breakpoints: {
@@ -9369,6 +9369,7 @@
     });
     $(document).ready(function() {
       let isMenuOpen = false;
+      ;
       $("#menu-button").click(function() {
         isMenuOpen = !isMenuOpen;
         if (isMenuOpen) {
@@ -11796,6 +11797,7 @@
     });
     var mySwiper = new Swiper("#applications", {
       // If we need pagination
+      modules: [Navigation, Pagination],
       slidesPerView: 1.1,
       spaceBetween: 32,
       breakpoints: {
@@ -11827,6 +11829,7 @@
     });
     var mySwiper = new Swiper("#cases", {
       // If we need pagination
+      modules: [Navigation, Pagination],
       slidesPerView: 1.1,
       spaceBetween: 32,
       // Navigation arrows

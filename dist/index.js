@@ -9208,9 +9208,9 @@
     var menu = [
       "Sports & Hospitality",
       "Mobile Work & Learning",
-      "Film & Production Support",
-      "Events &\xA0Roadshow",
       "Sales &\xA0Promotion",
+      "Events &\xA0Roadshow",
+      "Film & Production Support",
       "Living &\xA0LIfestyle"
     ];
     var currentSlideIndex = 0;
@@ -9380,8 +9380,8 @@
         } else {
           $(".button.is-text-menu.w-inline-block").each(function() {
             $(this).on("mouseover", function() {
-              $(this).css("color", "#bc9753");
-              $(".button_underline", this).css("background-color", "#bc9753");
+              $(this).css("color", "#465c58");
+              $(".button_underline", this).css("background-color", "#465c58");
             });
             $(this).on("mouseout", function() {
               $(this).css("color", "#292929");

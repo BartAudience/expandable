@@ -6,9 +6,9 @@ export const marketSwiper = () => {
   var menu = [
     'Sports & Hospitality',
     'Mobile Work & Learning',
-    'Film & Production Support',
-    'Events & Roadshow',
     'Sales & Promotion',
+    'Events & Roadshow',
+    'Film & Production Support',
     'Living & LIfestyle',
   ];
 

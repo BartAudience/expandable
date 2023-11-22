@@ -80,8 +80,8 @@ export const smallCustomCode = () => {
       } else {
         $('.button.is-text-menu.w-inline-block').each(function () {
           $(this).on('mouseover', function () {
-            $(this).css('color', '#bc9753');
-            $('.button_underline', this).css('background-color', '#bc9753');
+            $(this).css('color', '#465c58');
+            $('.button_underline', this).css('background-color', '#465c58');
           });
 
           $(this).on('mouseout', function () {

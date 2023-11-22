@@ -3,7 +3,7 @@ export const customMenuTheme = () => {
     // if (document.querySelector('.section_dark-subheader')) {
     //     document.querySelector('.nav_component').style.background = 'transparent';
     //     $('.button.is-text-menu.w-inline-block').css('color', '#fff');
-    //     $('.button.is-text-menu.w-inline-block.w--current').css('color', '#bc9753');
+    //     $('.button.is-text-menu.w-inline-block.w--current').css('color', '#465c58');
     //     $('.nav_brand.w-nav-brand').css('filter', 'invert(1)');
     //     $('.button.is-menu.w-inline-block').css('border-color', '#fff');
     //     $('.button.is-menu.w-inline-block').css('color', '#fff');
@@ -19,7 +19,7 @@ export const customMenuTheme = () => {
     //         isMenuOpen = !isMenuOpen;
     //         document.querySelector('.nav_component').style.background = 'transparent';
     //         $('.button.is-text-menu.w-inline-block').css('color', '#fff');
-    //         $('.button.is-text-menu.w-inline-block.w--current').css('color', '#bc9753');
+    //         $('.button.is-text-menu.w-inline-block.w--current').css('color', '#465c58');
     //         $('.nav_brand.w-nav-brand').css('filter', 'invert(1)');
     //         $('.button.is-menu.w-inline-block').css('border-color', '#fff');
     //         $('.button.is-menu.w-inline-block').css('color', '#fff !important');

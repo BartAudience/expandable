@@ -68,8 +68,11 @@ export const smallCustomCode = () => {
   $(document).ready(function () {
     let isMenuOpen = false;
 
+    ;
+
     $('#menu-button').click(function () {
       isMenuOpen = !isMenuOpen;
+
 
       if (isMenuOpen) {
         $('.button.is-text-menu.w-inline-block').each(function () {
@@ -78,6 +81,7 @@ export const smallCustomCode = () => {
           $(this).off('mouseover mouseout'); // Remove the mouseover/mouseout listeners
         });
       } else {
+
         $('.button.is-text-menu.w-inline-block').each(function () {
           $(this).on('mouseover', function () {
             $(this).css('color', '#465c58');

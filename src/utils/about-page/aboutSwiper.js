@@ -1,11 +1,11 @@
 import Swiper from 'swiper';
-import { Navigation } from 'swiper/modules';
+import { Navigation, Pagination } from 'swiper/modules';
 
 export const aboutSwiper = () => {
   // Initialize Swiper
   var mySwiper = new Swiper('#alternating', {
     // If we need pagination
-    modules: [Navigation],
+    modules: [Navigation, Pagination],
     slidesPerView: 1.1,
     spaceBetween: 32,
     breakpoints: {

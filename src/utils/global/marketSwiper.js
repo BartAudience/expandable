@@ -14,7 +14,7 @@ export const marketSwiper = () => {
 
   var currentSlideIndex = 0; // Initialize with the first slide index
 
-  var mySwiper = new Swiper('.swiper', {
+  var mySwiper = new Swiper('#markets', {
     modules: [Navigation, Pagination],
 
     // If we need pagination

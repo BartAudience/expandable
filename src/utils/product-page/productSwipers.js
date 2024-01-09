@@ -36,6 +36,7 @@ export const productSwipers = () => {
     },
   });
 
+
   // Initialize Swiper
   var mySwiper = new Swiper('#applications', {
     // If we need pagination

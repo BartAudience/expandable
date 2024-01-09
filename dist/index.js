@@ -9214,7 +9214,7 @@
       "Living &\xA0LIfestyle"
     ];
     var currentSlideIndex = 0;
-    var mySwiper = new Swiper(".swiper", {
+    var mySwiper = new Swiper("#markets", {
       modules: [Navigation, Pagination],
       // If we need pagination
       slidesPerView: 1.1,

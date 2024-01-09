@@ -1,5 +1,11 @@
 # @zuid/expendable
 
+## 0.3.4
+
+### Patch Changes
+
+- a7fe2c8: fix swiper intervening
+
 ## 0.3.3
 
 ### Patch Changes

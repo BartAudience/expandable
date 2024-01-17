@@ -1,5 +1,11 @@
 # @zuid/expendable
 
+## 0.4.0
+
+### Minor Changes
+
+- b268e77: new video animation
+
 ## 0.3.4
 
 ### Patch Changes

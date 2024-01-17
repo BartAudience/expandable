@@ -11739,6 +11739,75 @@
     };
     animateElement(".home-video_component", ".home-video_wrapper");
     animateElement(".logo-header_track", ".logo-header_footage");
+    const numImages = 100;
+    const canvas = document.getElementById("onscroll-video");
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const images = [];
+    for (let i = 0; i <= numImages; i++) {
+      const img = new Image();
+      const imgNumber = String(i).padStart(5, "0");
+      img.src = `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${imgNumber}.webp`;
+      images.push(img);
+    }
+    Promise.all(
+      images.map((img) => {
+        return new Promise((resolve) => {
+          img.onload = () => resolve();
+          img.onerror = (e) => console.log(img.src);
+        });
+      })
+    ).then(() => {
+      drawFrame(
+        0,
+        ctx,
+        canvas,
+        images
+      );
+      gsapWithCSS.to(
+        {},
+        {
+          frame: numImages - 1,
+          snap: "frame",
+          scrollTrigger: {
+            trigger: ".home-video_component",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.5,
+            onUpdate: (self) => {
+              drawFrame(
+                self.progress.toFixed(3) * (numImages - 1),
+                ctx,
+                canvas,
+                images
+              );
+            }
+          }
+        }
+      );
+    }).catch((err) => console.log(err));
+    function drawFrame(frame, ctx2, canvas2, images2) {
+      const img = images2[Math.floor(frame)];
+      const canvasRatio = canvas2.width / canvas2.height;
+      const imgRatio = img.width / img.height;
+      let drawWidth, drawHeight, drawX, drawY;
+      if (canvasRatio > imgRatio) {
+        drawWidth = canvas2.width;
+        drawHeight = img.height * (canvas2.width / img.width);
+        drawX = 0;
+        drawY = (canvas2.height - drawHeight) / 2;
+      } else {
+        drawWidth = img.width * (canvas2.height / img.height);
+        drawHeight = canvas2.height;
+        drawX = (canvas2.width - drawWidth) / 2;
+        drawY = 0;
+      }
+      ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+      ctx2.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+    }
   };
 
   // src/utils/news-page/newsItemHover.js

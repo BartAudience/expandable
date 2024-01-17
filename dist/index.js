@@ -11741,6 +11741,8 @@
     animateElement(".logo-header_track", ".logo-header_footage");
     const numImages = 100;
     const canvas = document.getElementById("onscroll-video");
+    if (!canvas)
+      return;
     canvas.style.width = "100%";
     canvas.style.height = "100%";
     const ctx = canvas.getContext("2d");

@@ -45,6 +45,7 @@ export const videoComponentAnimation = (name) => {
   const numImages = 100;
 
   const canvas = document.getElementById('onscroll-video');
+  if (!canvas) return;
   canvas.style.width = '100%';
   canvas.style.height = '100%';
 

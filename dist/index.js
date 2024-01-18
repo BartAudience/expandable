@@ -11704,12 +11704,54 @@
   };
   _getGSAP3() && gsap4.registerPlugin(ScrollTrigger3);
 
+  // src/utils/helpers.js
+  function imageSequence(config3) {
+    let playhead = { frame: 0 }, ctx = gsapWithCSS.utils.toArray(config3.canvas)[0].getContext("2d"), onUpdate = config3.onUpdate, images, updateImage = function() {
+      const frame = playhead.frame;
+      const canvas = gsapWithCSS.utils.toArray(config3.canvas)[0];
+      const parentContainer = document.querySelector(".home-video_wrapper");
+      const img = images[Math.floor(frame)];
+      canvas.width = parentContainer.offsetWidth;
+      canvas.height = parentContainer.offsetHeight;
+      const canvasRatio = canvas.width / canvas.height;
+      const imgRatio = img.width / img.height;
+      let drawWidth, drawHeight, drawX, drawY;
+      if (canvasRatio > imgRatio) {
+        drawWidth = canvas.width;
+        drawHeight = img.height * (canvas.width / img.width);
+        drawX = 0;
+        drawY = (canvas.height - drawHeight) / 2;
+      } else {
+        drawWidth = img.width * (canvas.height / img.height);
+        drawHeight = canvas.height;
+        drawX = (canvas.width - drawWidth) / 2;
+        drawY = 0;
+      }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+      onUpdate && onUpdate.call(this);
+    };
+    images = config3.urls.map((url, i) => {
+      let img = new Image();
+      img.src = url;
+      i || (img.onload = updateImage);
+      return img;
+    });
+    return gsapWithCSS.to(playhead, {
+      frame: images.length - 1,
+      ease: "none",
+      onUpdate: updateImage,
+      scrollTrigger: config3.scrollTrigger
+    });
+  }
+
   // src/utils/global/videoComponentAnimation.js
   var videoComponentAnimation = (name) => {
     gsapWithCSS.registerPlugin(ScrollTrigger3);
     ScrollTrigger3.defaults({
       markers: false
     });
+    let mm = gsapWithCSS.matchMedia();
     const animateElement = (triggerSelector, targetSelector) => {
       const triggerElement = document.querySelector(triggerSelector);
       const targetElement = document.querySelector(targetSelector);
@@ -11737,8 +11779,6 @@
         "+=2"
       );
     };
-    animateElement(".home-video_component", ".home-video_wrapper");
-    animateElement(".logo-header_track", ".logo-header_footage");
     const numImages = 100;
     const canvas = document.getElementById("onscroll-video");
     if (!canvas)
@@ -11746,70 +11786,38 @@
     canvas.style.width = "100%";
     canvas.style.height = "100%";
     const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const images = [];
-    for (let i = 0; i <= numImages; i++) {
-      const img = new Image();
-      const imgNumber = String(i).padStart(5, "0");
-      img.src = `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${imgNumber}.webp`;
-      images.push(img);
-    }
-    Promise.all(
-      images.map((img) => {
-        return new Promise((resolve) => {
-          img.onload = () => resolve();
-          img.onerror = (e) => console.log(img.src);
-        });
-      })
-    ).then(() => {
-      drawFrame(
-        0,
-        ctx,
-        canvas,
-        images
-      );
-      gsapWithCSS.to(
-        {},
-        {
-          frame: numImages - 1,
-          snap: "frame",
-          scrollTrigger: {
-            trigger: ".home-video_component",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 0.5,
-            onUpdate: (self) => {
-              drawFrame(
-                self.progress.toFixed(3) * (numImages - 1),
-                ctx,
-                canvas,
-                images
-              );
-            }
-          }
+    const parentContainer = document.querySelector(".home-video_wrapper");
+    canvas.width = parentContainer.offsetWidth;
+    canvas.height = parentContainer.offsetHeight;
+    mm.add("(min-width: 992px)", () => {
+      animateElement(".home-video_component", ".home-video_wrapper");
+      animateElement(".logo-header_track", ".logo-header_footage");
+      imageSequence({
+        urls: Array.from({ length: numImages }, (_, i) => `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
+        canvas: "#onscroll-video",
+        // <canvas> object to draw images to
+        scrollTrigger: {
+          trigger: ".home-video_component",
+          start: "top center",
+          end: "bottom bottom",
+          scrub: 0.5
         }
-      );
-    }).catch((err) => console.log(err));
-    function drawFrame(frame, ctx2, canvas2, images2) {
-      const img = images2[Math.floor(frame)];
-      const canvasRatio = canvas2.width / canvas2.height;
-      const imgRatio = img.width / img.height;
-      let drawWidth, drawHeight, drawX, drawY;
-      if (canvasRatio > imgRatio) {
-        drawWidth = canvas2.width;
-        drawHeight = img.height * (canvas2.width / img.width);
-        drawX = 0;
-        drawY = (canvas2.height - drawHeight) / 2;
-      } else {
-        drawWidth = img.width * (canvas2.height / img.height);
-        drawHeight = canvas2.height;
-        drawX = (canvas2.width - drawWidth) / 2;
-        drawY = 0;
-      }
-      ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
-      ctx2.drawImage(img, drawX, drawY, drawWidth, drawHeight);
-    }
+      });
+    });
+    mm.add("(max-width: 991px)", () => {
+      imageSequence({
+        urls: Array.from({ length: numImages }, (_, i) => `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
+        canvas: "#onscroll-video",
+        // <canvas> object to draw images to
+        scrollTrigger: {
+          trigger: ".home-video_component",
+          start: "top-=20% center",
+          end: window.innerHeight * 0.8,
+          scrub: 0.5,
+          markers: false
+        }
+      });
+    });
   };
 
   // src/utils/news-page/newsItemHover.js

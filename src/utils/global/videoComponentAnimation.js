@@ -1,11 +1,14 @@
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { imageSequence } from '../helpers';
 
 export const videoComponentAnimation = (name) => {
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.defaults({
     markers: false,
   });
+
+  let mm = gsap.matchMedia();
 
   const animateElement = (triggerSelector, targetSelector) => {
     const triggerElement = document.querySelector(triggerSelector);
@@ -39,9 +42,6 @@ export const videoComponentAnimation = (name) => {
       );
   };
 
-  animateElement('.home-video_component', '.home-video_wrapper');
-  animateElement('.logo-header_track', '.logo-header_footage');
-
   const numImages = 100;
 
   const canvas = document.getElementById('onscroll-video');
@@ -50,77 +50,120 @@ export const videoComponentAnimation = (name) => {
   canvas.style.height = '100%';
 
   const ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth; // Set to desired width
-  canvas.height = window.innerHeight; // Set to desired height
-  // Load images with specific naming convention
-  const images = [];
-  for (let i = 0; i <= numImages; i++) {
-    const img = new Image();
-    const imgNumber = String(i).padStart(5, "0"); // Pad the number to 5 digits
-    img.src = `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${imgNumber}.webp`;
-    images.push(img);
-  }
+  const parentContainer = document.querySelector('.home-video_wrapper')
+  canvas.width = parentContainer.offsetWidth;
+  canvas.height = parentContainer.offsetHeight;
 
-  Promise.all(
-    images.map((img) => {
-      return new Promise((resolve) => {
-        img.onload = () => resolve();
+  mm.add("(min-width: 992px)", () => {
+    animateElement('.home-video_component', '.home-video_wrapper');
+    animateElement('.logo-header_track', '.logo-header_footage');
 
-        img.onerror = (e) => console.log(img.src);
-      });
-    })
-  )
-    .then(() => {
-      drawFrame(
-        0,
-        ctx,
-        canvas,
-        images
-      );
-      gsap.to(
-        {},
-        {
-          frame: numImages - 1,
-          snap: "frame",
-          scrollTrigger: {
-            trigger: ".home-video_component",
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: 0.5,
-            onUpdate: (self) => {
-              drawFrame(
-                self.progress.toFixed(3) * (numImages - 1),
-                ctx,
-                canvas,
-                images
-              );
-            },
-          },
-        }
-      );
-    })
-    .catch((err) => console.log(err));
+    imageSequence({
+      urls: Array.from({ length: numImages }, (_, i) => `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
+      canvas: "#onscroll-video", // <canvas> object to draw images to
+      scrollTrigger: {
+        trigger: ".home-video_component",
+        start: 'top center',
+        end: 'bottom bottom',
+        scrub: 0.5,
+      }
+    });
 
-  function drawFrame(frame, ctx, canvas, images) {
-    const img = images[Math.floor(frame)];
-    const canvasRatio = canvas.width / canvas.height;
-    const imgRatio = img.width / img.height;
-    let drawWidth, drawHeight, drawX, drawY;
+  });
 
-    if (canvasRatio > imgRatio) {
-      drawWidth = canvas.width;
-      drawHeight = img.height * (canvas.width / img.width);
-      drawX = 0;
-      drawY = (canvas.height - drawHeight) / 2;
-    } else {
-      drawWidth = img.width * (canvas.height / img.height);
-      drawHeight = canvas.height;
-      drawX = (canvas.width - drawWidth) / 2;
-      drawY = 0;
-    }
+  mm.add("(max-width: 991px)", () => {
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
-  }
+    imageSequence({
+      urls: Array.from({ length: numImages }, (_, i) => `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
+      canvas: "#onscroll-video", // <canvas> object to draw images to
+      scrollTrigger: {
+        trigger: ".home-video_component",
+        start: 'top-=20% center',
+        end: window.innerHeight * 0.8,
+        scrub: 0.5,
+        markers: false,
+      }
+    });
+  });
+
+
+
+
+
+
+  // const images = [];
+  // for (let i = 0; i <= numImages; i++) {
+  //   const img = new Image();
+  //   const imgNumber = String(i).padStart(5, "0");
+  //   img.src = `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${imgNumber}.webp`;
+  //   images.push(img);
+  // }
+
+  // Promise.all(
+  //   images.map((img) => {
+  //     return new Promise((resolve) => {
+  //       img.onload = () => resolve();
+
+  //       img.onerror = (e) => console.log(img.src);
+  //     });
+  //   })
+  // )
+  //   .then(() => {
+  //     drawFrame(
+  //       0,
+  //       ctx,
+  //       canvas,
+  //       images
+  //     );
+  //     gsap.to(
+  //       {},
+  //       {
+  //         frame: numImages - 1,
+  //         snap: "frame",
+  //         scrollTrigger: {
+  //           trigger: ".home-video_component",
+  //           start: 'top center',
+  //           end: 'bottom bottom',
+  //           scrub: 0.5,
+  //           markers: true,
+  //           onUpdate: (self) => {
+  //             drawFrame(
+  //               self.progress.toFixed(3) * (numImages - 1),
+  //               ctx,
+  //               canvas,
+  //               images
+  //             );
+  //           },
+  //         },
+  //       }
+  //     );
+  //   })
+  //   .catch((err) => console.log(err));
+
+  // function drawFrame(frame, ctx, canvas, images) {
+  //   const img = images[Math.floor(frame)];
+  //   canvas.width = parentContainer.offsetWidth; // Set to desired width
+  //   canvas.height = parentContainer.offsetHeight; // Set to desired height
+  //   const canvasRatio = canvas.width / canvas.height;
+  //   console.log(canvas.width)
+  //   const imgRatio = img.width / img.height;
+  //   let drawWidth, drawHeight, drawX, drawY;
+
+  //   if (canvasRatio > imgRatio) {
+  //     drawWidth = canvas.width;
+  //     drawHeight = img.height * (canvas.width / img.width);
+  //     drawX = 0;
+  //     drawY = (canvas.height - drawHeight) / 2;
+  //   } else {
+  //     drawWidth = img.width * (canvas.height / img.height);
+  //     drawHeight = canvas.height;
+  //     drawX = (canvas.width - drawWidth) / 2;
+  //     drawY = 0;
+  //   }
+
+  //   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //   ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+  // }
+
 
 };

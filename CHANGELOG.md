@@ -1,5 +1,11 @@
 # @zuid/expendable
 
+## 0.4.2
+
+### Patch Changes
+
+- b743e08: test
+
 ## 0.4.1
 
 ### Patch Changes

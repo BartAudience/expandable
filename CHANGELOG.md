@@ -1,5 +1,11 @@
 # @zuid/expendable
 
+## 0.4.3
+
+### Patch Changes
+
+- c7587dc: touch-action
+
 ## 0.4.2
 
 ### Patch Changes

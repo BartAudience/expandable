@@ -1,5 +1,11 @@
 # @zuid/expendable
 
+## 0.4.1
+
+### Patch Changes
+
+- 38d26d7: test
+
 ## 0.4.0
 
 ### Minor Changes

@@ -9287,7 +9287,8 @@
     } else {
       $(".swiper-pagination-bullet").css("width", "auto");
     }
-    $(".swiper-horizontal").css("touch-action", "pan-y");
+    console.log($(".swiper"));
+    $(".swiper").css("touch-action", "pan-y");
     $(".markets-slider_image-item").removeClass("is-hover");
     $(".markets-slider_image").removeClass("is-hover");
     $(".button-box_markets-slider").on("mouseenter mouseleave", function() {
@@ -11755,6 +11756,8 @@
     const animateElement = (triggerSelector, targetSelector) => {
       const triggerElement = document.querySelector(triggerSelector);
       const targetElement = document.querySelector(targetSelector);
+      if (!triggerElement || !targetElement)
+        return;
       const tlGrow = gsapWithCSS.timeline({
         scrollTrigger: {
           trigger: triggerElement,
@@ -11767,18 +11770,24 @@
         duration: 2,
         width: "100svw",
         height: "100svh",
-        borderRadius: "0rem"
+        borderRadius: "0rem",
+        y: "-8rem"
       }).to(
         targetElement,
         {
           duration: 3,
           width: "80svw",
           height: "80svh",
-          borderRadius: "3rem"
+          borderRadius: "3rem",
+          y: "0rem"
         },
         "+=2"
       );
     };
+    mm.add("(min-width: 992px)", () => {
+      animateElement(".home-video_component", ".home-video_wrapper");
+      animateElement(".logo-header_track", ".logo-header_footage");
+    });
     const numImages = 100;
     const canvas = document.getElementById("onscroll-video");
     if (!canvas)
@@ -11790,8 +11799,6 @@
     canvas.width = parentContainer.offsetWidth;
     canvas.height = parentContainer.offsetHeight;
     mm.add("(min-width: 992px)", () => {
-      animateElement(".home-video_component", ".home-video_wrapper");
-      animateElement(".logo-header_track", ".logo-header_footage");
       imageSequence({
         urls: Array.from({ length: numImages }, (_, i) => `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
         canvas: "#onscroll-video",

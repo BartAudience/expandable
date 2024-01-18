@@ -103,7 +103,9 @@ export const marketSwiper = () => {
     $('.swiper-pagination-bullet').css('width', 'auto');
   }
 
-  $('.swiper-horizontal').css('touch-action', 'pan-y');
+  //every .swiper-horizontal touch action is pan-y
+  console.log($('.swiper'))
+  $('.swiper').css('touch-action', 'pan-y');
 
 
   $('.markets-slider_image-item').removeClass('is-hover');

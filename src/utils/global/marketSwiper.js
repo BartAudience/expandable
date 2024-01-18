@@ -1,5 +1,5 @@
 import Swiper from 'swiper';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Keyboard } from 'swiper/modules';
 import gsap from 'gsap';
 
 export const marketSwiper = () => {
@@ -15,7 +15,7 @@ export const marketSwiper = () => {
   var currentSlideIndex = 0; // Initialize with the first slide index
 
   var mySwiper = new Swiper('#markets', {
-    modules: [Navigation, Pagination],
+    modules: [Navigation, Pagination, Keyboard],
 
     // If we need pagination
     slidesPerView: 1.1,

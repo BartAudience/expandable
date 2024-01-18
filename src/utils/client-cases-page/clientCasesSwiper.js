@@ -1,10 +1,10 @@
 import Swiper from 'swiper';
-import { Autoplay } from 'swiper/modules';
+import { Autoplay, Keyboard } from 'swiper/modules';
 
 export const clientCasesSwiper = () => {
   // Initialize Swiper
   var mySwiper = new Swiper('#cases-clients', {
-    modules: [Autoplay],
+    modules: [Autoplay, Keyboard],
     slidesPerView: 1.1,
     spaceBetween: 40,
     speed: 3000,
@@ -14,6 +14,10 @@ export const clientCasesSwiper = () => {
     autoplay: {
       delay: 0,
       disableOnInteraction: false,
+    },
+    keyboard: {
+      enabled: true,
+      onlyInViewport: true,
     },
     breakpoints: {
       0: {

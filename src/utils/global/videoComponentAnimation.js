@@ -15,6 +15,7 @@ export const videoComponentAnimation = (name) => {
     const targetElement = document.querySelector(targetSelector);
 
     if (!triggerElement || !targetElement) return;
+
     const tlGrow = gsap.timeline({
       scrollTrigger: {
         trigger: triggerElement,
@@ -48,20 +49,15 @@ export const videoComponentAnimation = (name) => {
   mm.add("(min-width: 992px)", () => {
     animateElement('.home-video_component', '.home-video_wrapper');
     animateElement('.logo-header_track', '.logo-header_footage');
-
   });
 
   const numImages = 100;
 
   const canvas = document.getElementById('onscroll-video');
+
   if (!canvas) return;
   canvas.style.width = '100%';
   canvas.style.height = '100%';
-
-  const ctx = canvas.getContext("2d");
-  const parentContainer = document.querySelector('.home-video_wrapper')
-  canvas.width = parentContainer.offsetWidth;
-  canvas.height = parentContainer.offsetHeight;
 
   mm.add("(min-width: 992px)", () => {
 
@@ -69,11 +65,12 @@ export const videoComponentAnimation = (name) => {
       urls: Array.from({ length: numImages }, (_, i) => `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
       canvas: "#onscroll-video", // <canvas> object to draw images to
       scrollTrigger: {
-        trigger: ".home-video_component",
+        trigger: ".home-video_track",
         start: 'top center',
         end: 'bottom bottom',
         scrub: 0.5,
-      }
+      },
+      parentContainer: '.home-video_wrapper'
     });
 
   });
@@ -84,12 +81,13 @@ export const videoComponentAnimation = (name) => {
       urls: Array.from({ length: numImages }, (_, i) => `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
       canvas: "#onscroll-video", // <canvas> object to draw images to
       scrollTrigger: {
-        trigger: ".home-video_component",
+        trigger: ".home-video_track",
         start: 'top-=20% center',
         end: window.innerHeight * 0.8,
         scrub: 0.5,
         markers: false,
-      }
+      },
+      parentContainer: '.home-video_wrapper'
     });
   });
 

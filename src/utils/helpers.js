@@ -9,9 +9,8 @@ export function imageSequence(config) {
             const frame = playhead.frame;
             const canvas = gsap.utils.toArray(config.canvas)[0];
 
-            const parentContainer = document.querySelector('.home-video_wrapper');
+            const parentContainer = document.querySelector(config.parentContainer);
             const img = images[Math.floor(frame)];
-
             canvas.width = parentContainer.offsetWidth; // Set to desired width
             canvas.height = parentContainer.offsetHeight; // Set to desired height
             const canvasRatio = canvas.width / canvas.height;

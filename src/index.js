@@ -8,6 +8,8 @@ import { videoComponentAnimation } from './utils/global/videoComponentAnimation'
 import { newsItemHover } from './utils/news-page/newsItemHover';
 import { productSwipers } from './utils/product-page/productSwipers';
 import { hoverAnimationCard } from './utils/markets-page/hoverAnimationCard';
+import { uspAnimation } from './utils/global/UspAnimation';
+import { productAnimation } from './utils/global/productAnimation';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
@@ -18,6 +20,8 @@ window.Webflow.push(() => {
   smallCustomCode();
   marketSwiper();
   customMenuTheme();
+  uspAnimation();
+  productAnimation();
 
   productSwipers();
   aboutSwiper();

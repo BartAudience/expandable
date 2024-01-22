@@ -1,5 +1,12 @@
 # @zuid/expendable
 
+## 0.4.4
+
+### Patch Changes
+
+- feac1d1: products animation scroll
+- 78a6a7c: rmv consolelog
+
 ## 0.4.3
 
 ### Patch Changes

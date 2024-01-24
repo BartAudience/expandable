@@ -10,9 +10,11 @@ import { productSwipers } from './utils/product-page/productSwipers';
 import { hoverAnimationCard } from './utils/markets-page/hoverAnimationCard';
 import { uspAnimation } from './utils/global/UspAnimation';
 import { productAnimation } from './utils/global/productAnimation';
+import { pageLoader } from './utils/global/pageLoader';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
+  pageLoader();
 
   //global
   videoComponentAnimation();

@@ -610,7 +610,7 @@
       });
       observers.push(observer);
     };
-    const init4 = () => {
+    const init5 = () => {
       if (!swiper.params.observer)
         return;
       if (swiper.params.observeParents) {
@@ -637,7 +637,7 @@
       observeParents: false,
       observeSlideChildren: false
     });
-    on("init", init4);
+    on("init", init5);
     on("destroy", destroy);
   }
   var eventsEmitter = {
@@ -4141,7 +4141,7 @@
       swiper.slideNext();
       emit("navigationNext");
     }
-    function init4() {
+    function init5() {
       const params = swiper.params.navigation;
       swiper.params.navigation = createElementIfNotDefined(swiper, swiper.originalParams.navigation, swiper.params.navigation, {
         nextEl: "swiper-button-next",
@@ -4186,7 +4186,7 @@
       if (swiper.params.navigation.enabled === false) {
         disable();
       } else {
-        init4();
+        init5();
         update2();
       }
     });
@@ -4232,7 +4232,7 @@
     });
     const enable = () => {
       swiper.el.classList.remove(...swiper.params.navigation.navigationDisabledClass.split(" "));
-      init4();
+      init5();
       update2();
     };
     const disable = () => {
@@ -4243,7 +4243,7 @@
       enable,
       disable,
       update: update2,
-      init: init4,
+      init: init5,
       destroy
     });
   }
@@ -4487,7 +4487,7 @@
         }
       });
     }
-    function render3() {
+    function render4() {
       const params = swiper.params.pagination;
       if (isPaginationDisabled())
         return;
@@ -4535,7 +4535,7 @@
         emit("paginationRender", el[0]);
       }
     }
-    function init4() {
+    function init5() {
       swiper.params.pagination = createElementIfNotDefined(swiper, swiper.originalParams.pagination, swiper.params.pagination, {
         el: "swiper-pagination"
       });
@@ -4630,8 +4630,8 @@
       if (swiper.params.pagination.enabled === false) {
         disable();
       } else {
-        init4();
-        render3();
+        init5();
+        render4();
         update2();
       }
     });
@@ -4644,7 +4644,7 @@
       update2();
     });
     on("snapGridLengthChange", () => {
-      render3();
+      render4();
       update2();
     });
     on("destroy", () => {
@@ -4686,8 +4686,8 @@
         el = makeElementsArray(el);
         el.forEach((subEl) => subEl.classList.remove(swiper.params.pagination.paginationDisabledClass));
       }
-      init4();
-      render3();
+      init5();
+      render4();
       update2();
     };
     const disable = () => {
@@ -4704,9 +4704,9 @@
     Object.assign(swiper.pagination, {
       enable,
       disable,
-      render: render3,
+      render: render4,
       update: update2,
-      init: init4,
+      init: init5,
       destroy
     });
   }
@@ -5124,7 +5124,7 @@
     }
   };
 
-  // node_modules/.pnpm/gsap@3.12.2/node_modules/gsap/gsap-core.js
+  // node_modules/.pnpm/@gsap+business@3.12.5/node_modules/@gsap/business/gsap-core.js
   function _assertThisInitialized(self) {
     if (self === void 0) {
       throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -5683,7 +5683,7 @@
           max = -_bigNum;
           while (max < (max = a[wrapAt++].getBoundingClientRect().left) && wrapAt < l) {
           }
-          wrapAt--;
+          wrapAt < l && wrapAt--;
         }
         distances = cache[l] = [];
         originX = ratios ? Math.min(wrapAt, l) * ratioX - 0.5 : from % wrapAt;
@@ -5884,8 +5884,10 @@
   var _quickTween;
   var _registerPluginQueue = [];
   var _createPlugin = function _createPlugin2(config3) {
-    if (_windowExists() && config3) {
-      config3 = !config3.name && config3["default"] || config3;
+    if (!config3)
+      return;
+    config3 = !config3.name && config3["default"] || config3;
+    if (_windowExists() || config3.headless) {
       var name = config3.name, isFunc = _isFunction(config3), Plugin = name && !isFunc && config3.init ? function() {
         this._props = [];
       } : config3, instanceDefaults = {
@@ -5919,7 +5921,7 @@
       _addGlobal(name, Plugin);
       config3.register && config3.register(gsap2, Plugin, PropTween);
     } else {
-      config3 && _registerPluginQueue.push(config3);
+      _registerPluginQueue.push(config3);
     }
   };
   var _255 = 255;
@@ -6073,7 +6075,7 @@
   var _ticker = function() {
     var _getTime3 = Date.now, _lagThreshold = 500, _adjustedLag = 33, _startTime = _getTime3(), _lastUpdate = _startTime, _gap = 1e3 / 240, _nextTime = _gap, _listeners3 = [], _id, _req, _raf, _self, _delta, _i2, _tick = function _tick2(v) {
       var elapsed = _getTime3() - _lastUpdate, manual = v === true, overlap, dispatch, time, frame;
-      elapsed > _lagThreshold && (_startTime += elapsed - _adjustedLag);
+      (elapsed > _lagThreshold || elapsed < 0) && (_startTime += elapsed - _adjustedLag);
       _lastUpdate += elapsed;
       time = _lastUpdate - _startTime;
       overlap = time - _nextTime;
@@ -6108,9 +6110,9 @@
             _globals.gsap = gsap2;
             (_win.gsapVersions || (_win.gsapVersions = [])).push(gsap2.version);
             _install(_installScope || _win.GreenSockGlobals || !_win.gsap && _win || {});
-            _raf = _win.requestAnimationFrame;
             _registerPluginQueue.forEach(_createPlugin);
           }
+          _raf = typeof requestAnimationFrame !== "undefined" && requestAnimationFrame;
           _id && _self.sleep();
           _req = _raf || function(f) {
             return setTimeout(f, _nextTime - _self.time * 1e3 + 1 | 0);
@@ -6120,7 +6122,7 @@
         }
       },
       sleep: function sleep() {
-        (_raf ? _win.cancelAnimationFrame : clearTimeout)(_id);
+        (_raf ? cancelAnimationFrame : clearTimeout)(_id);
         _tickerActive = 0;
         _req = _emptyFunc;
       },
@@ -6376,16 +6378,16 @@
       return arguments.length ? this.totalTime(Math.min(this.totalDuration(), value + _elapsedCycleDuration(this)) % (this._dur + this._rDelay) || (value ? this._dur : 0), suppressEvents) : this._time;
     };
     _proto.totalProgress = function totalProgress(value, suppressEvents) {
-      return arguments.length ? this.totalTime(this.totalDuration() * value, suppressEvents) : this.totalDuration() ? Math.min(1, this._tTime / this._tDur) : this.ratio;
+      return arguments.length ? this.totalTime(this.totalDuration() * value, suppressEvents) : this.totalDuration() ? Math.min(1, this._tTime / this._tDur) : this.rawTime() > 0 ? 1 : 0;
     };
     _proto.progress = function progress(value, suppressEvents) {
-      return arguments.length ? this.totalTime(this.duration() * (this._yoyo && !(this.iteration() & 1) ? 1 - value : value) + _elapsedCycleDuration(this), suppressEvents) : this.duration() ? Math.min(1, this._time / this._dur) : this.ratio;
+      return arguments.length ? this.totalTime(this.duration() * (this._yoyo && !(this.iteration() & 1) ? 1 - value : value) + _elapsedCycleDuration(this), suppressEvents) : this.duration() ? Math.min(1, this._time / this._dur) : this.rawTime() > 0 ? 1 : 0;
     };
     _proto.iteration = function iteration(value, suppressEvents) {
       var cycleDuration = this.duration() + this._rDelay;
       return arguments.length ? this.totalTime(this._time + (value - 1) * cycleDuration, suppressEvents) : this._repeat ? _animationCycle(this._tTime, cycleDuration) + 1 : 1;
     };
-    _proto.timeScale = function timeScale(value) {
+    _proto.timeScale = function timeScale(value, suppressEvents) {
       if (!arguments.length) {
         return this._rts === -_tinyNum ? 0 : this._rts;
       }
@@ -6395,7 +6397,7 @@
       var tTime = this.parent && this._ts ? _parentToChildTotalTime(this.parent._time, this) : this._tTime;
       this._rts = +value || 0;
       this._ts = this._ps || value === -_tinyNum ? 0 : this._rts;
-      this.totalTime(_clamp(-Math.abs(this._delay), this._tDur, tTime), true);
+      this.totalTime(_clamp(-Math.abs(this._delay), this._tDur, tTime), suppressEvents !== false);
       _setEnd(this);
       return _recacheAncestors(this);
     };
@@ -6449,10 +6451,10 @@
     _proto.globalTime = function globalTime(rawTime) {
       var animation = this, time = arguments.length ? rawTime : animation.rawTime();
       while (animation) {
-        time = animation._start + time / (animation._ts || 1);
+        time = animation._start + time / (Math.abs(animation._ts) || 1);
         animation = animation._dp;
       }
-      return !this.parent && this._sat ? this._sat.vars.immediateRender ? -Infinity : this._sat.globalTime(rawTime) : time;
+      return !this.parent && this._sat ? this._sat.globalTime(rawTime) : time;
     };
     _proto.repeat = function repeat(value) {
       if (arguments.length) {
@@ -6631,7 +6633,7 @@
       _inheritDefaults(toVars).immediateRender = _isNotFalse(toVars.immediateRender);
       return this.staggerTo(targets, duration, toVars, stagger, position, onCompleteAll, onCompleteAllParams);
     };
-    _proto2.render = function render3(totalTime, suppressEvents, force) {
+    _proto2.render = function render4(totalTime, suppressEvents, force) {
       var prevTime = this._time, tDur = this._dirty ? this.totalDuration() : this._tDur, dur = this._dur, tTime = totalTime <= 0 ? 0 : _roundPrecise(totalTime), crossingStart = this._zTime < 0 !== totalTime < 0 && (this._initted || !dur), time, child, next, iteration, cycleDuration, prevPaused, pauseTween, timeScale, prevStart, prevIteration, yoyo, isYoyo;
       this !== _globalTimeline && tTime > tDur && totalTime >= 0 && (tTime = tDur);
       if (tTime !== this._tTime || force || crossingStart) {
@@ -7153,7 +7155,7 @@
   var _overwritingTween;
   var _forceAllPropTweens;
   var _initTween = function _initTween2(tween, time, tTime) {
-    var vars = tween.vars, ease = vars.ease, startAt = vars.startAt, immediateRender = vars.immediateRender, lazy = vars.lazy, onUpdate = vars.onUpdate, onUpdateParams = vars.onUpdateParams, callbackScope = vars.callbackScope, runBackwards = vars.runBackwards, yoyoEase = vars.yoyoEase, keyframes = vars.keyframes, autoRevert = vars.autoRevert, dur = tween._dur, prevStartAt = tween._startAt, targets = tween._targets, parent = tween.parent, fullTargets = parent && parent.data === "nested" ? parent.vars.targets : targets, autoOverwrite = tween._overwrite === "auto" && !_suppressOverwrites, tl = tween.timeline, cleanVars, i, p, pt, target, hasPriority, gsData, harness, plugin, ptLookup, index, harnessVars, overwritten;
+    var vars = tween.vars, ease = vars.ease, startAt = vars.startAt, immediateRender = vars.immediateRender, lazy = vars.lazy, onUpdate = vars.onUpdate, runBackwards = vars.runBackwards, yoyoEase = vars.yoyoEase, keyframes = vars.keyframes, autoRevert = vars.autoRevert, dur = tween._dur, prevStartAt = tween._startAt, targets = tween._targets, parent = tween.parent, fullTargets = parent && parent.data === "nested" ? parent.vars.targets : targets, autoOverwrite = tween._overwrite === "auto" && !_suppressOverwrites, tl = tween.timeline, cleanVars, i, p, pt, target, hasPriority, gsData, harness, plugin, ptLookup, index, harnessVars, overwritten;
     tl && (!keyframes || !ease) && (ease = "none");
     tween._ease = _parseEase(ease, _defaults.ease);
     tween._yEase = yoyoEase ? _invertEase(_parseEase(yoyoEase === true ? ease : yoyoEase, _defaults.ease)) : 0;
@@ -7181,9 +7183,9 @@
           lazy: !prevStartAt && _isNotFalse(lazy),
           startAt: null,
           delay: 0,
-          onUpdate,
-          onUpdateParams,
-          callbackScope,
+          onUpdate: onUpdate && function() {
+            return _callback(tween, "onUpdate");
+          },
           stagger: 0
         }, startAt)));
         tween._startAt._dp = 0;
@@ -7262,7 +7264,7 @@
     tween._initted = (!tween._op || tween._pt) && !overwritten;
     keyframes && time <= 0 && tl.render(_bigNum, true, true);
   };
-  var _updatePropTweens = function _updatePropTweens2(tween, property, value, start, startIsRelative, ratio, time) {
+  var _updatePropTweens = function _updatePropTweens2(tween, property, value, start, startIsRelative, ratio, time, skipRecursion) {
     var ptCache = (tween._pt && tween._ptCache || (tween._ptCache = {}))[property], pt, rootPT, lookup, i;
     if (!ptCache) {
       ptCache = tween._ptCache[property] = [];
@@ -7281,7 +7283,7 @@
           tween.vars[property] = "+=0";
           _initTween(tween, time);
           _forceAllPropTweens = 0;
-          return 1;
+          return skipRecursion ? _warn(property + " not eligible for reset") : 1;
         }
         ptCache.push(pt);
       }
@@ -7354,7 +7356,7 @@
       }
       _this3 = _Animation2.call(this, skipInherit ? vars : _inheritDefaults(vars)) || this;
       var _this3$vars = _this3.vars, duration = _this3$vars.duration, delay = _this3$vars.delay, immediateRender = _this3$vars.immediateRender, stagger = _this3$vars.stagger, overwrite = _this3$vars.overwrite, keyframes = _this3$vars.keyframes, defaults3 = _this3$vars.defaults, scrollTrigger = _this3$vars.scrollTrigger, yoyoEase = _this3$vars.yoyoEase, parent = vars.parent || _globalTimeline, parsedTargets = (_isArray(targets) || _isTypedArray(targets) ? _isNumber(targets[0]) : "length" in vars) ? [targets] : toArray(targets), tl, i, copy, l, p, curTarget, staggerFunc, staggerVarsToMerge;
-      _this3._targets = parsedTargets.length ? _harness(parsedTargets) : _warn("GSAP target " + targets + " not found. https://greensock.com", !_config.nullTargetWarn) || [];
+      _this3._targets = parsedTargets.length ? _harness(parsedTargets) : _warn("GSAP target " + targets + " not found. https://gsap.com", !_config.nullTargetWarn) || [];
       _this3._ptLookup = [];
       _this3._overwrite = overwrite;
       if (keyframes || stagger || _isFuncOrString(duration) || _isFuncOrString(delay)) {
@@ -7452,7 +7454,7 @@
       return _this3;
     }
     var _proto3 = Tween2.prototype;
-    _proto3.render = function render3(totalTime, suppressEvents, force) {
+    _proto3.render = function render4(totalTime, suppressEvents, force) {
       var prevTime = this._time, tDur = this._tDur, dur = this._dur, isNegative = totalTime < 0, tTime = totalTime > tDur - _tinyNum && !isNegative ? tDur : totalTime < _tinyNum ? 0 : totalTime, time, pt, iteration, cycleDuration, prevIteration, isYoyo, ratio, timeline2, yoyoEase;
       if (!dur) {
         _renderZeroDurationTween(this, totalTime, suppressEvents, force);
@@ -7470,7 +7472,7 @@
             time = dur;
           } else {
             iteration = ~~(tTime / cycleDuration);
-            if (iteration && iteration === tTime / cycleDuration) {
+            if (iteration && iteration === _roundPrecise(tTime / cycleDuration)) {
               time = dur;
               iteration--;
             }
@@ -7482,13 +7484,13 @@
             time = dur - time;
           }
           prevIteration = _animationCycle(this._tTime, cycleDuration);
-          if (time === prevTime && !force && this._initted) {
+          if (time === prevTime && !force && this._initted && iteration === prevIteration) {
             this._tTime = tTime;
             return this;
           }
           if (iteration !== prevIteration) {
             timeline2 && this._yEase && _propagateYoyoEase(timeline2, isYoyo);
-            if (this.vars.repeatRefresh && !isYoyo && !this._lock) {
+            if (this.vars.repeatRefresh && !isYoyo && !this._lock && this._time !== cycleDuration && this._initted) {
               this._lock = force = 1;
               this.render(_roundPrecise(cycleDuration * iteration), true).invalidate()._lock = 0;
             }
@@ -7499,7 +7501,7 @@
             this._tTime = 0;
             return this;
           }
-          if (prevTime !== this._time) {
+          if (prevTime !== this._time && !(force && this.vars.repeatRefresh && iteration !== prevIteration)) {
             return this;
           }
           if (dur !== this._dur) {
@@ -7527,7 +7529,7 @@
           pt.r(ratio, pt.d);
           pt = pt._next;
         }
-        timeline2 && timeline2.render(totalTime < 0 ? totalTime : !time && isYoyo ? -_tinyNum : timeline2._dur * timeline2._ease(time / this._dur), suppressEvents, force) || this._startAt && (this._zTime = totalTime);
+        timeline2 && timeline2.render(totalTime < 0 ? totalTime : timeline2._dur * timeline2._ease(time / this._dur), suppressEvents, force) || this._startAt && (this._zTime = totalTime);
         if (this._onUpdate && !suppressEvents) {
           isNegative && _rewindStartAt(this, totalTime, suppressEvents, force);
           _callback(this, "onUpdate");
@@ -7554,14 +7556,14 @@
       this.timeline && this.timeline.invalidate(soft);
       return _Animation2.prototype.invalidate.call(this, soft);
     };
-    _proto3.resetTo = function resetTo(property, value, start, startIsRelative) {
+    _proto3.resetTo = function resetTo(property, value, start, startIsRelative, skipRecursion) {
       _tickerActive || _ticker.wake();
       this._ts || this.play();
       var time = Math.min(this._dur, (this._dp._time - this._start) * this._ts), ratio;
       this._initted || _initTween(this, time);
       ratio = this._ease(time / this._dur);
-      if (_updatePropTweens(this, property, value, start, startIsRelative, ratio, time)) {
-        return this.resetTo(property, value, start, startIsRelative);
+      if (_updatePropTweens(this, property, value, start, startIsRelative, ratio, time, skipRecursion)) {
+        return this.resetTo(property, value, start, startIsRelative, 1);
       }
       _alignPlayhead(this, 0);
       this.parent || _addLinkedListItem(this._dp, this, "_first", "_last", this._dp._sort ? "_start" : 0);
@@ -7830,7 +7832,9 @@
       });
       _dispatch("matchMediaRevert");
       matches.forEach(function(c) {
-        return c.onMatch(c);
+        return c.onMatch(c, function(func) {
+          return c.add(null, func);
+        });
       });
       _lastMediaTime = time;
       _dispatch("matchMedia");
@@ -7865,7 +7869,9 @@
         return result;
       };
       self.last = f;
-      return name === _isFunction ? f(self) : name ? self[name] = f : f;
+      return name === _isFunction ? f(self, function(func2) {
+        return self.add(null, func2);
+      }) : name ? self[name] = f : f;
     };
     _proto5.ignore = function ignore(func) {
       var prev = _context;
@@ -7886,32 +7892,44 @@
     _proto5.kill = function kill(revert, matchMedia2) {
       var _this4 = this;
       if (revert) {
-        var tweens = this.getTweens();
-        this.data.forEach(function(t) {
-          if (t.data === "isFlip") {
-            t.revert();
-            t.getChildren(true, true, false).forEach(function(tween) {
-              return tweens.splice(tweens.indexOf(tween), 1);
-            });
+        (function() {
+          var tweens = _this4.getTweens(), i2 = _this4.data.length, t;
+          while (i2--) {
+            t = _this4.data[i2];
+            if (t.data === "isFlip") {
+              t.revert();
+              t.getChildren(true, true, false).forEach(function(tween) {
+                return tweens.splice(tweens.indexOf(tween), 1);
+              });
+            }
           }
-        });
-        tweens.map(function(t) {
-          return {
-            g: t.globalTime(0),
-            t
-          };
-        }).sort(function(a, b) {
-          return b.g - a.g || -Infinity;
-        }).forEach(function(o) {
-          return o.t.revert(revert);
-        });
-        this.data.forEach(function(e) {
-          return !(e instanceof Tween) && e.revert && e.revert(revert);
-        });
-        this._r.forEach(function(f) {
-          return f(revert, _this4);
-        });
-        this.isReverted = true;
+          tweens.map(function(t2) {
+            return {
+              g: t2._dur || t2._delay || t2._sat && !t2._sat.vars.immediateRender ? t2.globalTime(0) : -Infinity,
+              t: t2
+            };
+          }).sort(function(a, b) {
+            return b.g - a.g || -Infinity;
+          }).forEach(function(o) {
+            return o.t.revert(revert);
+          });
+          i2 = _this4.data.length;
+          while (i2--) {
+            t = _this4.data[i2];
+            if (t instanceof Timeline) {
+              if (t.data !== "nested") {
+                t.scrollTrigger && t.scrollTrigger.revert();
+                t.kill();
+              }
+            } else {
+              !(t instanceof Tween) && t.revert && t.revert(revert);
+            }
+          }
+          _this4._r.forEach(function(f) {
+            return f(revert, _this4);
+          });
+          _this4.isReverted = true;
+        })();
       } else {
         this.data.forEach(function(e) {
           return e.kill && e.kill();
@@ -7934,6 +7952,7 @@
     function MatchMedia2(scope) {
       this.contexts = [];
       this.scope = scope;
+      _context && _context.data.push(this);
     }
     var _proto6 = MatchMedia2.prototype;
     _proto6.add = function add(conditions, func, scope) {
@@ -7957,7 +7976,9 @@
           }
         }
       }
-      active && func(context3);
+      active && func(context3, function(f) {
+        return context3.add(null, f);
+      });
       return this;
     };
     _proto6.revert = function revert(config3) {
@@ -8186,7 +8207,7 @@
       name,
       rawVars: 1,
       //don't pre-process function-based values or "random()" strings.
-      init: function init4(target, vars, tween) {
+      init: function init5(target, vars, tween) {
         tween._onInit = function(tween2) {
           var temp, p;
           if (_isString(vars)) {
@@ -8237,7 +8258,7 @@
       }
     }
   }, _buildModifierPlugin("roundProps", _roundModifier), _buildModifierPlugin("modifiers"), _buildModifierPlugin("snap", snap)) || _gsap;
-  Tween.version = Timeline.version = gsap2.version = "3.12.2";
+  Tween.version = Timeline.version = gsap2.version = "3.12.5";
   _coreReady = 1;
   _windowExists() && _wake();
   var Power0 = _easeMap.Power0;
@@ -8259,7 +8280,7 @@
   var Expo = _easeMap.Expo;
   var Circ = _easeMap.Circ;
 
-  // node_modules/.pnpm/gsap@3.12.2/node_modules/gsap/CSSPlugin.js
+  // node_modules/.pnpm/@gsap+business@3.12.5/node_modules/@gsap/business/CSSPlugin.js
   var _win2;
   var _doc2;
   var _docElement;
@@ -8329,14 +8350,15 @@
   var _transformOriginProp = _transformProp + "Origin";
   var _saveStyle = function _saveStyle2(property, isNotCSS) {
     var _this = this;
-    var target = this.target, style = target.style;
+    var target = this.target, style = target.style, cache = target._gsap;
     if (property in _transformProps && style) {
       this.tfm = this.tfm || {};
       if (property !== "transform") {
         property = _propertyAliases[property] || property;
         ~property.indexOf(",") ? property.split(",").forEach(function(a) {
           return _this.tfm[a] = _get(target, a);
-        }) : this.tfm[property] = target._gsap.x ? target._gsap[property] : _get(target, property);
+        }) : this.tfm[property] = cache.x ? cache[property] : _get(target, property);
+        property === _transformOriginProp && (this.tfm.zOrigin = cache.zOrigin);
       } else {
         return _propertyAliases.transform.split(",").forEach(function(p) {
           return _saveStyle2.call(_this, p, isNotCSS);
@@ -8345,7 +8367,7 @@
       if (this.props.indexOf(_transformProp) >= 0) {
         return;
       }
-      if (target._gsap.svg) {
+      if (cache.svg) {
         this.svgo = target.getAttribute("data-svg-origin");
         this.props.push(_transformOriginProp, isNotCSS, "");
       }
@@ -8376,6 +8398,11 @@
       i = _reverting2();
       if ((!i || !i.isStart) && !style[_transformProp]) {
         _removeIndependentTransforms(style);
+        if (cache.zOrigin && style[_transformOriginProp]) {
+          style[_transformOriginProp] += " " + cache.zOrigin + "px";
+          cache.zOrigin = 0;
+          cache.renderTransform();
+        }
         cache.uncache = 1;
       }
     }
@@ -8396,7 +8423,7 @@
   var _supports3D;
   var _createElement = function _createElement2(type, ns) {
     var e = _doc2.createElementNS ? _doc2.createElementNS((ns || "http://www.w3.org/1999/xhtml").replace(/^https/, "http"), type) : _doc2.createElement(type);
-    return e.style ? e : _doc2.createElement(type);
+    return e && e.style ? e : _doc2.createElement(type);
   };
   var _getComputedProperty = function _getComputedProperty2(target, property, skipPrefixFallback) {
     var cs = getComputedStyle(target);
@@ -8484,15 +8511,16 @@
   };
   var _removeProperty = function _removeProperty2(target, property) {
     if (property) {
-      var style = target.style;
+      var style = target.style, first2Chars;
       if (property in _transformProps && property !== _transformOriginProp) {
         property = _transformProp;
       }
       if (style.removeProperty) {
-        if (property.substr(0, 2) === "ms" || property.substr(0, 6) === "webkit") {
+        first2Chars = property.substr(0, 2);
+        if (first2Chars === "ms" || property.substr(0, 6) === "webkit") {
           property = "-" + property;
         }
-        style.removeProperty(property.replace(_capsExp, "-$1").toLowerCase());
+        style.removeProperty(first2Chars === "--" ? property : property.replace(_capsExp, "-$1").toLowerCase());
       } else {
         style.removeAttribute(property);
       }
@@ -8538,12 +8566,19 @@
     if (cache && toPercent && cache.width && horizontal && cache.time === _ticker.time && !cache.uncache) {
       return _round(curValue / cache.width * amount);
     } else {
-      (toPercent || curUnit === "%") && !_nonStandardLayouts[_getComputedProperty(parent, "display")] && (style.position = _getComputedProperty(target, "position"));
-      parent === target && (style.position = "static");
-      parent.appendChild(_tempDiv);
-      px = _tempDiv[measureProperty];
-      parent.removeChild(_tempDiv);
-      style.position = "absolute";
+      if (toPercent && (property === "height" || property === "width")) {
+        var v = target.style[property];
+        target.style[property] = amount + unit;
+        px = target[measureProperty];
+        v ? target.style[property] = v : _removeProperty(target, property);
+      } else {
+        (toPercent || curUnit === "%") && !_nonStandardLayouts[_getComputedProperty(parent, "display")] && (style.position = _getComputedProperty(target, "position"));
+        parent === target && (style.position = "static");
+        parent.appendChild(_tempDiv);
+        px = _tempDiv[measureProperty];
+        parent.removeChild(_tempDiv);
+        style.position = "absolute";
+      }
       if (horizontal && toPercent) {
         cache = _getCache(parent);
         cache.time = _ticker.time;
@@ -8588,9 +8623,10 @@
     start += "";
     end += "";
     if (end === "auto") {
+      startValue = target.style[prop];
       target.style[prop] = end;
       end = _getComputedProperty(target, prop) || end;
-      target.style[prop] = start;
+      startValue ? target.style[prop] = startValue : _removeProperty(target, prop);
     }
     a = [start, end];
     _colorStringFilter(a);
@@ -8753,7 +8789,7 @@
     		}
     	}
     	cache.classPT = plugin._pt = new PropTween(plugin._pt, target, "className", 0, 0, _renderClassName, data, 0, -11);
-    	if (style.cssText !== cssText) { //only apply if things change. Otherwise, in cases like a background-image that's pulled dynamically, it could cause a refresh. See https://greensock.com/forums/topic/20368-possible-gsap-bug-switching-classnames-in-chrome/.
+    	if (style.cssText !== cssText) { //only apply if things change. Otherwise, in cases like a background-image that's pulled dynamically, it could cause a refresh. See https://gsap.com/forums/topic/20368-possible-gsap-bug-switching-classnames-in-chrome/.
     		style.cssText = cssText; //we recorded cssText before we swapped classes and ran _getAllStyles() because in cases when a className tween is overwritten, we remove all the related tweening properties from that class change (otherwise class-specific stuff can't override properties we've directly set on the target's style object due to specificity).
     	}
     	_parseTransform(target, true); //to clear the caching of transforms
@@ -8964,7 +9000,7 @@
     cache.skewX = skewX + deg;
     cache.skewY = skewY + deg;
     cache.transformPerspective = perspective + px;
-    if (cache.zOrigin = parseFloat(origin.split(" ")[2]) || 0) {
+    if (cache.zOrigin = parseFloat(origin.split(" ")[2]) || !uncache && cache.zOrigin || 0) {
       style[_transformOriginProp] = _firstTwoOnly(origin);
     }
     cache.xOffset = cache.yOffset = 0;
@@ -9207,7 +9243,7 @@
           if (startAt && p in startAt) {
             startValue = typeof startAt[p] === "function" ? startAt[p].call(tween, index, target, targets) : startAt[p];
             _isString(startValue) && ~startValue.indexOf("random(") && (startValue = _replaceRandom(startValue));
-            getUnit(startValue + "") || (startValue += _config.units[p] || getUnit(_get(target, p)) || "");
+            getUnit(startValue + "") || startValue === "auto" || (startValue += _config.units[p] || getUnit(_get(target, p)) || "");
             (startValue + "").charAt(1) === "=" && (startValue = _get(target, p));
           } else {
             startValue = _get(target, p);
@@ -9345,7 +9381,7 @@
   });
   gsap2.registerPlugin(CSSPlugin);
 
-  // node_modules/.pnpm/gsap@3.12.2/node_modules/gsap/index.js
+  // node_modules/.pnpm/@gsap+business@3.12.5/node_modules/@gsap/business/index.js
   var gsapWithCSS = gsap2.registerPlugin(CSSPlugin) || gsap2;
   var TweenMaxWithCSS = gsapWithCSS.core.Tween;
 
@@ -9540,7 +9576,7 @@
     });
   };
 
-  // node_modules/.pnpm/gsap@3.12.2/node_modules/gsap/Observer.js
+  // node_modules/.pnpm/@gsap+business@3.12.5/node_modules/@gsap/business/Observer.js
   function _defineProperties(target, props) {
     for (var i = 0; i < props.length; i++) {
       var descriptor = props[i];
@@ -9599,9 +9635,9 @@
   var _isViewport = function _isViewport2(el) {
     return !!~_root.indexOf(el);
   };
-  var _addListener = function _addListener2(element, type, func, nonPassive, capture) {
+  var _addListener = function _addListener2(element, type, func, passive, capture) {
     return element.addEventListener(type, func, {
-      passive: !nonPassive,
+      passive: passive !== false,
       capture: !!capture
     });
   };
@@ -9715,7 +9751,7 @@
   };
   var _initCore3 = function _initCore4(core) {
     gsap3 = core || _getGSAP();
-    if (gsap3 && typeof document !== "undefined" && document.body) {
+    if (!_coreInitted2 && gsap3 && typeof document !== "undefined" && document.body) {
       _win3 = window;
       _doc3 = document;
       _docEl = _doc3.documentElement;
@@ -9742,7 +9778,7 @@
       this.init(vars);
     }
     var _proto = Observer3.prototype;
-    _proto.init = function init4(vars) {
+    _proto.init = function init5(vars) {
       _coreInitted2 || _initCore3(gsap3) || console.warn("Please gsap.registerPlugin(Observer)");
       ScrollTrigger2 || _setScrollTrigger();
       var tolerance = vars.tolerance, dragMinimum = vars.dragMinimum, type = vars.type, target = vars.target, lineHeight = vars.lineHeight, debounce = vars.debounce, preventDefault = vars.preventDefault, onStop = vars.onStop, onStopDelay = vars.onStopDelay, ignore = vars.ignore, wheelSpeed = vars.wheelSpeed, event2 = vars.event, onDragStart = vars.onDragStart, onDragEnd = vars.onDragEnd, onDrag = vars.onDrag, onPress = vars.onPress, onRelease = vars.onRelease, onRight = vars.onRight, onLeft = vars.onLeft, onUp = vars.onUp, onDown = vars.onDown, onChangeX = vars.onChangeX, onChangeY = vars.onChangeY, onChange = vars.onChange, onToggleX = vars.onToggleX, onToggleY = vars.onToggleY, onHover = vars.onHover, onHoverEnd = vars.onHoverEnd, onMove = vars.onMove, ignoreCheck = vars.ignoreCheck, isNormalizer = vars.isNormalizer, onGestureStart = vars.onGestureStart, onGestureEnd = vars.onGestureEnd, onWheel = vars.onWheel, onEnable = vars.onEnable, onDisable = vars.onDisable, onClick2 = vars.onClick, scrollSpeed = vars.scrollSpeed, capture = vars.capture, allowClicks = vars.allowClicks, lockAxis = vars.lockAxis, onLockAxis = vars.onLockAxis;
@@ -9756,7 +9792,7 @@
       type = type || "wheel,touch,pointer";
       debounce = debounce !== false;
       lineHeight || (lineHeight = parseFloat(_win3.getComputedStyle(_body).lineHeight) || 22);
-      var id, onStopDelayedCall, dragged, moved, wheeled, locked, axis, self = this, prevDeltaX = 0, prevDeltaY = 0, scrollFuncX = _getScrollFunc(target, _horizontal), scrollFuncY = _getScrollFunc(target, _vertical), scrollX = scrollFuncX(), scrollY = scrollFuncY(), limitToTouch = ~type.indexOf("touch") && !~type.indexOf("pointer") && _eventTypes[0] === "pointerdown", isViewport = _isViewport(target), ownerDoc = target.ownerDocument || _doc3, deltaX = [0, 0, 0], deltaY = [0, 0, 0], onClickTime = 0, clickCapture = function clickCapture2() {
+      var id, onStopDelayedCall, dragged, moved, wheeled, locked, axis, self = this, prevDeltaX = 0, prevDeltaY = 0, passive = vars.passive || !preventDefault, scrollFuncX = _getScrollFunc(target, _horizontal), scrollFuncY = _getScrollFunc(target, _vertical), scrollX = scrollFuncX(), scrollY = scrollFuncY(), limitToTouch = ~type.indexOf("touch") && !~type.indexOf("pointer") && _eventTypes[0] === "pointerdown", isViewport = _isViewport(target), ownerDoc = target.ownerDocument || _doc3, deltaX = [0, 0, 0], deltaY = [0, 0, 0], onClickTime = 0, clickCapture = function clickCapture2() {
         return onClickTime = _getTime();
       }, _ignoreCheck = function _ignoreCheck2(e, isPointerOrTouch) {
         return (self.event = e) && ignore && ~ignore.indexOf(e.target) || isPointerOrTouch && limitToTouch && e.pointerType !== "touch" || ignoreCheck && ignoreCheck(e, isPointerOrTouch);
@@ -9845,7 +9881,7 @@
         self.startY = self.y = e.clientY;
         self._vx.reset();
         self._vy.reset();
-        _addListener(isNormalizer ? target : ownerDoc, _eventTypes[1], _onDrag, preventDefault, true);
+        _addListener(isNormalizer ? target : ownerDoc, _eventTypes[1], _onDrag, passive, true);
         self.deltaX = self.deltaY = 0;
         onPress && onPress(self);
       }, _onRelease = self.onRelease = function(e) {
@@ -9853,8 +9889,8 @@
           return;
         }
         _removeListener(isNormalizer ? target : ownerDoc, _eventTypes[1], _onDrag, true);
-        var isTrackingDrag = !isNaN(self.y - self.startY), wasDragging = self.isDragging && (Math.abs(self.x - self.startX) > 3 || Math.abs(self.y - self.startY) > 3), eventData = _getEvent(e);
-        if (!wasDragging && isTrackingDrag) {
+        var isTrackingDrag = !isNaN(self.y - self.startY), wasDragging = self.isDragging, isDragNotClick = wasDragging && (Math.abs(self.x - self.startX) > 3 || Math.abs(self.y - self.startY) > 3), eventData = _getEvent(e);
+        if (!isDragNotClick && isTrackingDrag) {
           self._vx.reset();
           self._vy.reset();
           if (preventDefault && allowClicks) {
@@ -9872,9 +9908,9 @@
           }
         }
         self.isDragging = self.isGesturing = self.isPressed = false;
-        onStop && !isNormalizer && onStopDelayedCall.restart(true);
+        onStop && wasDragging && !isNormalizer && onStopDelayedCall.restart(true);
         onDragEnd && wasDragging && onDragEnd(self);
-        onRelease && onRelease(self, wasDragging);
+        onRelease && onRelease(self, isDragNotClick);
       }, _onGestureStart = function _onGestureStart2(e) {
         return e.touches && e.touches.length > 1 && (self.isGesturing = true) && onGestureStart(e, self.isDragging);
       }, _onGestureEnd = function _onGestureEnd2() {
@@ -9905,6 +9941,7 @@
         self.x = x;
         self.y = y;
         moved = true;
+        onStop && onStopDelayedCall.restart(true);
         (dx || dy) && onTouchOrPointerDelta(dx, dy);
       }, _onHover = function _onHover2(e) {
         self.event = e;
@@ -9926,13 +9963,13 @@
       self.enable = function(e) {
         if (!self.isEnabled) {
           _addListener(isViewport ? ownerDoc : target, "scroll", _onScroll);
-          type.indexOf("scroll") >= 0 && _addListener(isViewport ? ownerDoc : target, "scroll", onScroll2, preventDefault, capture);
-          type.indexOf("wheel") >= 0 && _addListener(target, "wheel", _onWheel, preventDefault, capture);
+          type.indexOf("scroll") >= 0 && _addListener(isViewport ? ownerDoc : target, "scroll", onScroll2, passive, capture);
+          type.indexOf("wheel") >= 0 && _addListener(target, "wheel", _onWheel, passive, capture);
           if (type.indexOf("touch") >= 0 && _isTouch || type.indexOf("pointer") >= 0) {
-            _addListener(target, _eventTypes[0], _onPress, preventDefault, capture);
+            _addListener(target, _eventTypes[0], _onPress, passive, capture);
             _addListener(ownerDoc, _eventTypes[2], _onRelease);
             _addListener(ownerDoc, _eventTypes[3], _onRelease);
-            allowClicks && _addListener(target, "click", clickCapture, false, true);
+            allowClicks && _addListener(target, "click", clickCapture, true, true);
             onClick2 && _addListener(target, "click", _onClick);
             onGestureStart && _addListener(ownerDoc, "gesturestart", _onGestureStart);
             onGestureEnd && _addListener(ownerDoc, "gestureend", _onGestureEnd);
@@ -9995,7 +10032,7 @@
     }]);
     return Observer3;
   }();
-  Observer2.version = "3.12.2";
+  Observer2.version = "3.12.5";
   Observer2.create = function(vars) {
     return new Observer2(vars);
   };
@@ -10010,7 +10047,7 @@
   };
   _getGSAP() && gsap3.registerPlugin(Observer2);
 
-  // node_modules/.pnpm/gsap@3.12.2/node_modules/gsap/ScrollTrigger.js
+  // node_modules/.pnpm/@gsap+business@3.12.5/node_modules/@gsap/business/ScrollTrigger.js
   var gsap4;
   var _coreInitted3;
   var _win4;
@@ -10042,6 +10079,8 @@
   var _scrollRestoration;
   var _div100vh;
   var _100vh;
+  var _isReverted;
+  var _clampingMax;
   var _limitCallbacks;
   var _startup2 = 1;
   var _getTime2 = Date.now;
@@ -10131,7 +10170,9 @@
   };
   var _callback3 = function _callback4(self, func) {
     if (self.enabled) {
-      var result = func(self);
+      var result = self._ctx ? self._ctx.add(function() {
+        return func(self);
+      }) : func(self);
       result && result.totalTime && (self.callbackAnimation = result);
     }
   };
@@ -10374,6 +10415,7 @@
         }
       }
     }
+    _isReverted = true;
     media && _revertRecorded(media);
     media || _dispatch3("revert");
   };
@@ -10397,11 +10439,16 @@
   };
   var _refresh100vh = function _refresh100vh2() {
     _body2.appendChild(_div100vh);
-    _100vh = _div100vh.offsetHeight || _win4.innerHeight;
+    _100vh = !_normalizer2 && _div100vh.offsetHeight || _win4.innerHeight;
     _body2.removeChild(_div100vh);
   };
+  var _hideAllMarkers = function _hideAllMarkers2(hide) {
+    return _toArray(".gsap-marker-start, .gsap-marker-end, .gsap-marker-scroller-start, .gsap-marker-scroller-end").forEach(function(el) {
+      return el.style.display = hide ? "none" : "block";
+    });
+  };
   var _refreshAll = function _refreshAll2(force, skipRevert) {
-    if (_lastScrollTime && !force) {
+    if (_lastScrollTime && !force && !_isReverted) {
       _addListener3(ScrollTrigger3, "scrollEnd", _softRefresh);
       return;
     }
@@ -10422,7 +10469,8 @@
     _triggers.slice(0).forEach(function(t) {
       return t.refresh();
     });
-    _triggers.forEach(function(t, i) {
+    _isReverted = false;
+    _triggers.forEach(function(t) {
       if (t._subPinOffset && t.pin) {
         var prop = t.vars.horizontal ? "offsetWidth" : "offsetHeight", original = t.pin[prop];
         t.revert(true, 1);
@@ -10430,10 +10478,14 @@
         t.refresh();
       }
     });
+    _clampingMax = 1;
+    _hideAllMarkers(true);
     _triggers.forEach(function(t) {
-      var max = _maxScroll(t.scroller, t._dir);
-      (t.vars.end === "max" || t._endClamp && t.end > max) && t.setPositions(t.start, Math.max(t.start + 1, max), true);
+      var max = _maxScroll(t.scroller, t._dir), endClamp = t.vars.end === "max" || t._endClamp && t.end > max, startClamp = t._startClamp && t.start >= max;
+      (endClamp || startClamp) && t.setPositions(startClamp ? max - 1 : t.start, endClamp ? Math.max(startClamp ? max : t.start + 1, max) : t.end, true);
     });
+    _hideAllMarkers(false);
+    _clampingMax = 0;
     refreshInits.forEach(function(result) {
       return result && result.render && result.render(-1);
     });
@@ -10460,7 +10512,7 @@
   var _direction = 1;
   var _primary;
   var _updateAll = function _updateAll2(force) {
-    if (!_refreshingAll || force === 2) {
+    if (force === 2 || !_refreshingAll && !_isReverted) {
       ScrollTrigger3.isUpdating = true;
       _primary && _primary.update(0);
       var l = _triggers.length, time = _getTime2(), recordVelocity = time - _time1 >= 50, scroll = l && _triggers[0].scroll();
@@ -10671,13 +10723,14 @@
       change1 = change1 || scrollTo - initialValue;
       tween && tween.kill();
       vars[prop] = scrollTo;
+      vars.inherit = false;
       vars.modifiers = modifiers;
       modifiers[prop] = function() {
         return checkForInterruption(initialValue + change1 * tween.ratio + change2 * tween.ratio * tween.ratio);
       };
       vars.onUpdate = function() {
         _scrollers.cache++;
-        _updateAll();
+        getTween2.tween && _updateAll();
       };
       vars.onComplete = function() {
         getTween2.tween = 0;
@@ -10701,7 +10754,7 @@
       this.init(vars, animation);
     }
     var _proto = ScrollTrigger4.prototype;
-    _proto.init = function init4(vars, animation) {
+    _proto.init = function init5(vars, animation) {
       this.progress = this.start = 0;
       this.vars && this.kill(true, true);
       if (!_enabled) {
@@ -10740,6 +10793,7 @@
           scrubTween ? scrubTween.duration(value) : scrubTween = gsap4.to(animation, {
             ease: "expo",
             totalProgress: "+=0",
+            inherit: false,
             duration: scrubSmooth,
             paused: true,
             onComplete: function onComplete() {
@@ -10780,7 +10834,10 @@
         snapDelayedCall = gsap4.delayedCall(snap3.delay || scrubSmooth / 2 || 0.1, function() {
           var scroll = scrollFunc(), refreshedRecently = _getTime2() - lastRefresh < 500, tween = tweenTo.tween;
           if ((refreshedRecently || Math.abs(self.getVelocity()) < 10) && !tween && !_pointerIsDown && lastSnap !== scroll) {
-            var progress = (scroll - start) / change, totalProgress = animation && !isToggle ? animation.totalProgress() : progress, velocity = refreshedRecently ? 0 : (totalProgress - snap22) / (_getTime2() - _time2) * 1e3 || 0, change1 = gsap4.utils.clamp(-progress, 1 - progress, _abs(velocity / 2) * velocity / 0.185), naturalEnd = progress + (snap3.inertia === false ? 0 : change1), endValue = _clamp4(0, 1, snapFunc(naturalEnd, self)), endScroll = Math.round(start + endValue * change), _snap = snap3, onStart = _snap.onStart, _onInterrupt = _snap.onInterrupt, _onComplete = _snap.onComplete;
+            var progress = (scroll - start) / change, totalProgress = animation && !isToggle ? animation.totalProgress() : progress, velocity = refreshedRecently ? 0 : (totalProgress - snap22) / (_getTime2() - _time2) * 1e3 || 0, change1 = gsap4.utils.clamp(-progress, 1 - progress, _abs(velocity / 2) * velocity / 0.185), naturalEnd = progress + (snap3.inertia === false ? 0 : change1), endValue, endScroll, _snap = snap3, onStart = _snap.onStart, _onInterrupt = _snap.onInterrupt, _onComplete = _snap.onComplete;
+            endValue = snapFunc(naturalEnd, self);
+            _isNumber3(endValue) || (endValue = naturalEnd);
+            endScroll = Math.round(start + endValue * change);
             if (scroll <= end && scroll >= start && endScroll !== scroll) {
               if (tween && !tween._initted && tween.data <= _abs(endScroll - scroll)) {
                 return;
@@ -10799,6 +10856,9 @@
                 onComplete: function onComplete() {
                   self.update();
                   lastSnap = scrollFunc();
+                  if (animation) {
+                    scrubTween ? scrubTween.resetTo("totalProgress", endValue, animation._tTime / animation._tDur) : animation.progress(endValue);
+                  }
                   snap1 = snap22 = animation && !isToggle ? animation.totalProgress() : self.progress;
                   onSnapComplete && onSnapComplete(self);
                   _onComplete && _onComplete(self);
@@ -10995,7 +11055,7 @@
           pinnedContainer && (cs2[direction.p] = "-=" + scrollFunc());
           gsap4.set([markerStart, markerEnd], cs2);
         }
-        if (pin) {
+        if (pin && !(_clampingMax && self.end >= _maxScroll(scroller, direction))) {
           cs2 = _getComputedStyle(pin);
           isVertical = direction === _vertical;
           scroll = scrollFunc();
@@ -11018,7 +11078,10 @@
             spacerState = [pinSpacing + direction.os2, change + otherPinOffset + _px];
             spacerState.t = spacer;
             i = pinSpacing === _padding ? _getSize(pin, direction) + change + otherPinOffset : 0;
-            i && spacerState.push(direction.d, i + _px);
+            if (i) {
+              spacerState.push(direction.d, i + _px);
+              spacer.style.flexBasis !== "auto" && (spacer.style.flexBasis = i + _px);
+            }
             _setState(spacerState);
             if (pinnedContainer) {
               _triggers.forEach(function(t) {
@@ -11028,6 +11091,9 @@
               });
             }
             useFixedPosition && scrollFunc(prevScroll);
+          } else {
+            i = _getSize(pin, direction);
+            i && spacer.style.flexBasis !== "auto" && (spacer.style.flexBasis = i + _px);
           }
           if (useFixedPosition) {
             override = {
@@ -11090,7 +11156,7 @@
         }
         _refreshing = 0;
         animation && isToggle && (animation._initted || prevAnimProgress) && animation.progress() !== prevAnimProgress && animation.progress(prevAnimProgress || 0, true).render(animation.time(), true, true);
-        if (isFirstRefresh || prevProgress !== self.progress || containerAnimation) {
+        if (isFirstRefresh || prevProgress !== self.progress || containerAnimation || invalidateOnRefresh) {
           animation && !isToggle && animation.totalProgress(containerAnimation && start < -1e-3 && !prevProgress ? gsap4.utils.normalize(start, end, 0) : prevProgress, true);
           self.progress = isFirstRefresh || (scroll1 - start) / change === prevProgress ? 0 : prevProgress;
         }
@@ -11144,7 +11210,13 @@
             snap1 = animation && !isToggle ? animation.totalProgress() : clipped;
           }
         }
-        anticipatePin && !clipped && pin && !_refreshing && !_startup2 && _lastScrollTime && start < scroll + (scroll - scroll2) / (_getTime2() - _time2) * anticipatePin && (clipped = 1e-4);
+        if (anticipatePin && pin && !_refreshing && !_startup2 && _lastScrollTime) {
+          if (!clipped && start < scroll + (scroll - scroll2) / (_getTime2() - _time2) * anticipatePin) {
+            clipped = 1e-4;
+          } else if (clipped === 1 && end > scroll + (scroll - scroll2) / (_getTime2() - _time2) * anticipatePin) {
+            clipped = 0.9999;
+          }
+        }
         if (clipped !== prevProgress2 && self.enabled) {
           isActive = self.isActive = !!clipped && clipped < 1;
           wasActive = !!prevProgress2 && prevProgress2 < 1;
@@ -11347,7 +11419,7 @@
       }
       pin && _queueRefreshAll();
     };
-    ScrollTrigger4.register = function register(core) {
+    ScrollTrigger4.register = function register2(core) {
       if (!_coreInitted3) {
         gsap4 = core || _getGSAP3();
         _windowExists5() && window.document && ScrollTrigger4.enable();
@@ -11405,6 +11477,7 @@
           Observer2.register(gsap4);
           ScrollTrigger4.isTouch = Observer2.isTouch;
           _fixIOSBug = Observer2.isTouch && /(iPad|iPhone|iPod|Mac)/g.test(navigator.userAgent);
+          _ignoreMobileResize = Observer2.isTouch === 1;
           _addListener3(_win4, "wheel", _onScroll3);
           _root2 = [_win4, _doc4, _docEl2, _body2];
           if (gsap4.matchMedia) {
@@ -11524,7 +11597,7 @@
     };
     return ScrollTrigger4;
   }();
-  ScrollTrigger3.version = "3.12.2";
+  ScrollTrigger3.version = "3.12.5";
   ScrollTrigger3.saveStyles = function(targets) {
     return targets ? _toArray(targets).forEach(function(target) {
       if (target && target.style) {
@@ -11795,6 +11868,7 @@
     tween = gsap4.to(self, {
       ease: "power4",
       paused: true,
+      inherit: false,
       scrollX: normalizeScrollX ? "+=0.1" : "+=0",
       scrollY: "+=0.1",
       modifiers: {
@@ -11823,7 +11897,9 @@
       return _normalizer2.enable();
     }
     if (vars === false) {
-      return _normalizer2 && _normalizer2.kill();
+      _normalizer2 && _normalizer2.kill();
+      _normalizer2 = vars;
+      return;
     }
     var normalizer = vars instanceof Observer2 ? vars : _getScrollNormalizer(vars);
     _normalizer2 && _normalizer2.target === normalizer.target && _normalizer2.kill();
@@ -11852,6 +11928,14 @@
 
   // src/utils/helpers.js
   function imageSequence(config3) {
+    let imagesLoaded = 0;
+    const totalImages = 99;
+    const imageLoaded = () => {
+      imagesLoaded++;
+      if (imagesLoaded === totalImages) {
+        window.imageLoader.registerImageLoad();
+      }
+    };
     let playhead = { frame: 0 }, ctx = gsapWithCSS.utils.toArray(config3.canvas)[0].getContext("2d"), onUpdate = config3.onUpdate, images, updateImage = function() {
       const frame = playhead.frame;
       const canvas = gsapWithCSS.utils.toArray(config3.canvas)[0];
@@ -11880,9 +11964,11 @@
     images = config3.urls.map((url, i) => {
       let img = new Image();
       img.src = url;
+      img.onload = imageLoaded;
       i || (img.onload = updateImage);
       return img;
     });
+    window.imageLoader.addImages(config3.urls.length);
     return gsapWithCSS.to(playhead, {
       frame: images.length - 1,
       ease: "none",
@@ -11941,7 +12027,7 @@
     canvas.style.height = "100%";
     mm.add("(min-width: 992px)", () => {
       imageSequence({
-        urls: Array.from({ length: numImages }, (_, i) => `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
+        urls: Array.from({ length: numImages }, (_, i) => `https://expandable.ams3.digitaloceanspaces.com/frames/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
         canvas: "#onscroll-video",
         // <canvas> object to draw images to
         scrollTrigger: {
@@ -11955,7 +12041,7 @@
     });
     mm.add("(max-width: 991px)", () => {
       imageSequence({
-        urls: Array.from({ length: numImages }, (_, i) => `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
+        urls: Array.from({ length: numImages }, (_, i) => `https://expandable.ams3.digitaloceanspaces.com/frames/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
         canvas: "#onscroll-video",
         // <canvas> object to draw images to
         scrollTrigger: {
@@ -12148,7 +12234,7 @@
           continue;
         }
         imageSequence({
-          urls: Array.from({ length: numImages }, (_, k) => `https://onscroll-demo.vercel.app/WebP_Export_Srollanim_USP/2023032_USP_Scrollanim_${String(i * numImages + k).padStart(5, "0")}.webp`),
+          urls: Array.from({ length: numImages }, (_, k) => `https://expandable.ams3.digitaloceanspaces.com/frames/WebP_Export_Srollanim_USP/2023032_USP_Scrollanim_${String(i * numImages + k).padStart(5, "0")}.webp`),
           canvas,
           // <canvas> object to draw images to
           parentContainer,
@@ -12168,7 +12254,7 @@
           continue;
         }
         imageSequence({
-          urls: Array.from({ length: numImages }, (_, i2) => `https://onscroll-demo.vercel.app/WebP_Export_Srollanim_USP/2023032_USP_Scrollanim_${String(i2).padStart(5, "0")}.webp`),
+          urls: Array.from({ length: numImages }, (_, i2) => `https://expandable.ams3.digitaloceanspaces.com/frames/WebP_Export_Srollanim_USP/2023032_USP_Scrollanim_${String(i2).padStart(5, "0")}.webp`),
           canvas,
           // <canvas> object to draw images to
           parentContainer,
@@ -12232,7 +12318,7 @@
     canvas.style.height = "100%";
     mm.add("(min-width: 992px)", () => {
       imageSequence({
-        urls: Array.from({ length: numImages }, (_, i) => `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
+        urls: Array.from({ length: numImages }, (_, i) => `https://expandable.ams3.digitaloceanspaces.com/frames/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
         canvas: "#onscroll-products",
         // <canvas> object to draw images to
         scrollTrigger: {
@@ -12246,7 +12332,7 @@
     });
     mm.add("(max-width: 991px)", () => {
       imageSequence({
-        urls: Array.from({ length: numImages }, (_, i) => `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
+        urls: Array.from({ length: numImages }, (_, i) => `https://expandable.ams3.digitaloceanspaces.com/frames/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
         canvas: "#onscroll-products",
         // <canvas> object to draw images to
         scrollTrigger: {
@@ -12261,9 +12347,291 @@
     });
   };
 
+  // node_modules/.pnpm/@gsap+business@3.12.5/node_modules/@gsap/business/DrawSVGPlugin.js
+  var gsap5;
+  var _toArray2;
+  var _doc5;
+  var _win5;
+  var _isEdge;
+  var _coreInitted4;
+  var _warned;
+  var _getStyleSaver3;
+  var _reverting3;
+  var _windowExists7 = function _windowExists8() {
+    return typeof window !== "undefined";
+  };
+  var _getGSAP5 = function _getGSAP6() {
+    return gsap5 || _windowExists7() && (gsap5 = window.gsap) && gsap5.registerPlugin && gsap5;
+  };
+  var _numExp2 = /[-+=\.]*\d+[\.e\-\+]*\d*[e\-\+]*\d*/gi;
+  var _types = {
+    rect: ["width", "height"],
+    circle: ["r", "r"],
+    ellipse: ["rx", "ry"],
+    line: ["x2", "y2"]
+  };
+  var _round5 = function _round6(value) {
+    return Math.round(value * 1e4) / 1e4;
+  };
+  var _parseNum = function _parseNum2(value) {
+    return parseFloat(value) || 0;
+  };
+  var _parseSingleVal = function _parseSingleVal2(value, length) {
+    var num = _parseNum(value);
+    return ~value.indexOf("%") ? num / 100 * length : num;
+  };
+  var _getAttributeAsNumber = function _getAttributeAsNumber2(target, attr) {
+    return _parseNum(target.getAttribute(attr));
+  };
+  var _sqrt2 = Math.sqrt;
+  var _getDistance = function _getDistance2(x1, y1, x2, y2, scaleX, scaleY) {
+    return _sqrt2(Math.pow((_parseNum(x2) - _parseNum(x1)) * scaleX, 2) + Math.pow((_parseNum(y2) - _parseNum(y1)) * scaleY, 2));
+  };
+  var _warn3 = function _warn4(message) {
+    return console.warn(message);
+  };
+  var _hasNonScalingStroke = function _hasNonScalingStroke2(target) {
+    return target.getAttribute("vector-effect") === "non-scaling-stroke";
+  };
+  var _bonusValidated = 1;
+  var _parse = function _parse2(value, length, defaultStart) {
+    var i = value.indexOf(" "), s, e;
+    if (i < 0) {
+      s = defaultStart !== void 0 ? defaultStart + "" : value;
+      e = value;
+    } else {
+      s = value.substr(0, i);
+      e = value.substr(i + 1);
+    }
+    s = _parseSingleVal(s, length);
+    e = _parseSingleVal(e, length);
+    return s > e ? [e, s] : [s, e];
+  };
+  var _getLength = function _getLength2(target) {
+    target = _toArray2(target)[0];
+    if (!target) {
+      return 0;
+    }
+    var type = target.tagName.toLowerCase(), style = target.style, scaleX = 1, scaleY = 1, length, bbox, points, prevPoint, i, rx, ry;
+    if (_hasNonScalingStroke(target)) {
+      scaleY = target.getScreenCTM();
+      scaleX = _sqrt2(scaleY.a * scaleY.a + scaleY.b * scaleY.b);
+      scaleY = _sqrt2(scaleY.d * scaleY.d + scaleY.c * scaleY.c);
+    }
+    try {
+      bbox = target.getBBox();
+    } catch (e) {
+      _warn3("Some browsers won't measure invisible elements (like display:none or masks inside defs).");
+    }
+    var _ref = bbox || {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0
+    }, x = _ref.x, y = _ref.y, width = _ref.width, height = _ref.height;
+    if ((!bbox || !width && !height) && _types[type]) {
+      width = _getAttributeAsNumber(target, _types[type][0]);
+      height = _getAttributeAsNumber(target, _types[type][1]);
+      if (type !== "rect" && type !== "line") {
+        width *= 2;
+        height *= 2;
+      }
+      if (type === "line") {
+        x = _getAttributeAsNumber(target, "x1");
+        y = _getAttributeAsNumber(target, "y1");
+        width = Math.abs(width - x);
+        height = Math.abs(height - y);
+      }
+    }
+    if (type === "path") {
+      prevPoint = style.strokeDasharray;
+      style.strokeDasharray = "none";
+      length = target.getTotalLength() || 0;
+      _round5(scaleX) !== _round5(scaleY) && !_warned && (_warned = 1) && _warn3("Warning: <path> length cannot be measured when vector-effect is non-scaling-stroke and the element isn't proportionally scaled.");
+      length *= (scaleX + scaleY) / 2;
+      style.strokeDasharray = prevPoint;
+    } else if (type === "rect") {
+      length = width * 2 * scaleX + height * 2 * scaleY;
+    } else if (type === "line") {
+      length = _getDistance(x, y, x + width, y + height, scaleX, scaleY);
+    } else if (type === "polyline" || type === "polygon") {
+      points = target.getAttribute("points").match(_numExp2) || [];
+      type === "polygon" && points.push(points[0], points[1]);
+      length = 0;
+      for (i = 2; i < points.length; i += 2) {
+        length += _getDistance(points[i - 2], points[i - 1], points[i], points[i + 1], scaleX, scaleY) || 0;
+      }
+    } else if (type === "circle" || type === "ellipse") {
+      rx = width / 2 * scaleX;
+      ry = height / 2 * scaleY;
+      length = Math.PI * (3 * (rx + ry) - _sqrt2((3 * rx + ry) * (rx + 3 * ry)));
+    }
+    return length || 0;
+  };
+  var _getPosition = function _getPosition2(target, length) {
+    target = _toArray2(target)[0];
+    if (!target) {
+      return [0, 0];
+    }
+    length || (length = _getLength(target) + 1);
+    var cs = _win5.getComputedStyle(target), dash = cs.strokeDasharray || "", offset = _parseNum(cs.strokeDashoffset), i = dash.indexOf(",");
+    i < 0 && (i = dash.indexOf(" "));
+    dash = i < 0 ? length : _parseNum(dash.substr(0, i));
+    dash > length && (dash = length);
+    return [-offset || 0, dash - offset || 0];
+  };
+  var _initCore5 = function _initCore6() {
+    if (_windowExists7()) {
+      _doc5 = document;
+      _win5 = window;
+      _coreInitted4 = gsap5 = _getGSAP5();
+      _toArray2 = gsap5.utils.toArray;
+      _getStyleSaver3 = gsap5.core.getStyleSaver;
+      _reverting3 = gsap5.core.reverting || function() {
+      };
+      _isEdge = ((_win5.navigator || {}).userAgent || "").indexOf("Edge") !== -1;
+    }
+  };
+  var DrawSVGPlugin = {
+    version: "3.12.5",
+    name: "drawSVG",
+    register: function register(core) {
+      gsap5 = core;
+      _initCore5();
+    },
+    init: function init4(target, value, tween, index, targets) {
+      if (!target.getBBox) {
+        return false;
+      }
+      _coreInitted4 || _initCore5();
+      var length = _getLength(target), start, end, cs;
+      this.styles = _getStyleSaver3 && _getStyleSaver3(target, "strokeDashoffset,strokeDasharray,strokeMiterlimit");
+      this.tween = tween;
+      this._style = target.style;
+      this._target = target;
+      if (value + "" === "true") {
+        value = "0 100%";
+      } else if (!value) {
+        value = "0 0";
+      } else if ((value + "").indexOf(" ") === -1) {
+        value = "0 " + value;
+      }
+      start = _getPosition(target, length);
+      end = _parse(value, length, start[0]);
+      this._length = _round5(length);
+      this._dash = _round5(start[1] - start[0]);
+      this._offset = _round5(-start[0]);
+      this._dashPT = this.add(this, "_dash", this._dash, _round5(end[1] - end[0]), 0, 0, 0, 0, 0, 1);
+      this._offsetPT = this.add(this, "_offset", this._offset, _round5(-end[0]), 0, 0, 0, 0, 0, 1);
+      if (_isEdge) {
+        cs = _win5.getComputedStyle(target);
+        if (cs.strokeLinecap !== cs.strokeLinejoin) {
+          end = _parseNum(cs.strokeMiterlimit);
+          this.add(target.style, "strokeMiterlimit", end, end + 0.01);
+        }
+      }
+      this._live = _hasNonScalingStroke(target) || ~(value + "").indexOf("live");
+      this._nowrap = ~(value + "").indexOf("nowrap");
+      this._props.push("drawSVG");
+      return _bonusValidated;
+    },
+    render: function render3(ratio, data) {
+      if (data.tween._time || !_reverting3()) {
+        var pt = data._pt, style = data._style, length, lengthRatio, dash, offset;
+        if (pt) {
+          if (data._live) {
+            length = _getLength(data._target);
+            if (length !== data._length) {
+              lengthRatio = length / data._length;
+              data._length = length;
+              if (data._offsetPT) {
+                data._offsetPT.s *= lengthRatio;
+                data._offsetPT.c *= lengthRatio;
+              }
+              if (data._dashPT) {
+                data._dashPT.s *= lengthRatio;
+                data._dashPT.c *= lengthRatio;
+              } else {
+                data._dash *= lengthRatio;
+              }
+            }
+          }
+          while (pt) {
+            pt.r(ratio, pt.d);
+            pt = pt._next;
+          }
+          dash = data._dash || ratio && ratio !== 1 && 1e-4 || 0;
+          length = data._length - dash + 0.1;
+          offset = data._offset;
+          dash && offset && dash + Math.abs(offset % data._length) > data._length - 0.2 && (offset += offset < 0 ? 0.1 : -0.1) && (length += 0.1);
+          style.strokeDashoffset = dash ? offset : offset + 1e-3;
+          style.strokeDasharray = length < 0.2 ? "none" : dash ? dash + "px," + (data._nowrap ? 999999 : length) + "px" : "0px, 999999px";
+        }
+      } else {
+        data.styles.revert();
+      }
+    },
+    getLength: _getLength,
+    getPosition: _getPosition
+  };
+  _getGSAP5() && gsap5.registerPlugin(DrawSVGPlugin);
+
+  // src/utils/global/pageLoader.js
+  gsapWithCSS.registerPlugin(DrawSVGPlugin);
+  var pageLoader = () => {
+    const pageLoaderWrapper = document.querySelector(".page-loader");
+    if (!pageLoaderWrapper)
+      return;
+    pageLoaderWrapper.style.display = "block";
+    const svgPath = pageLoaderWrapper.getElementsByTagName("path")[0];
+    gsapWithCSS.set(svgPath, {
+      drawSVG: "0% 0%",
+      fill: "none",
+      strokeWidth: 2
+    });
+    window.imageLoader = {
+      totalImages: 0,
+      loadedImages: 0,
+      registerImageLoad: function() {
+        this.loadedImages++;
+        gsapWithCSS.to(svgPath, {
+          drawSVG: `0% ${this.loadedImages * 10}%`,
+          duration: 1.5,
+          ease: "power3.inOut"
+        });
+        if (this.loadedImages * 100 === this.totalImages) {
+          const tl = gsapWithCSS.timeline({
+            defaults: {
+              duration: 1.5,
+              ease: "power2.inOut"
+            }
+          });
+          tl.to(svgPath, {
+            fill: "#465c58",
+            ease: "power3.inOut",
+            duration: 1,
+            delay: 1
+          });
+          tl.to(pageLoaderWrapper, {
+            yPercent: -100,
+            ease: "power3.inOut",
+            duration: 1.5,
+            onComplete: () => {
+              pageLoaderWrapper.style.display = "none";
+            }
+          });
+        }
+      },
+      addImages: function(count) {
+        this.totalImages += count;
+      }
+    };
+  };
+
   // src/index.js
   window.Webflow ||= [];
   window.Webflow.push(() => {
+    pageLoader();
     videoComponentAnimation();
     lenisScroll();
     smallCustomCode();
@@ -12280,47 +12648,58 @@
 })();
 /*! Bundled license information:
 
-gsap/gsap-core.js:
+@gsap/business/gsap-core.js:
   (*!
-   * GSAP 3.12.2
-   * https://greensock.com
+   * GSAP 3.12.5
+   * https://gsap.com
    *
-   * @license Copyright 2008-2023, GreenSock. All rights reserved.
-   * Subject to the terms at https://greensock.com/standard-license or for
-   * Club GreenSock members, the agreement issued with that membership.
+   * @license Copyright 2008-2024, GreenSock. All rights reserved.
+   * Subject to the terms at https://gsap.com/standard-license or for
+   * Club GSAP members, the agreement issued with that membership.
    * @author: Jack Doyle, jack@greensock.com
   *)
 
-gsap/CSSPlugin.js:
+@gsap/business/CSSPlugin.js:
   (*!
-   * CSSPlugin 3.12.2
-   * https://greensock.com
+   * CSSPlugin 3.12.5
+   * https://gsap.com
    *
-   * Copyright 2008-2023, GreenSock. All rights reserved.
-   * Subject to the terms at https://greensock.com/standard-license or for
-   * Club GreenSock members, the agreement issued with that membership.
+   * Copyright 2008-2024, GreenSock. All rights reserved.
+   * Subject to the terms at https://gsap.com/standard-license or for
+   * Club GSAP members, the agreement issued with that membership.
    * @author: Jack Doyle, jack@greensock.com
   *)
 
-gsap/Observer.js:
+@gsap/business/Observer.js:
   (*!
-   * Observer 3.12.2
-   * https://greensock.com
+   * Observer 3.12.5
+   * https://gsap.com
    *
-   * @license Copyright 2008-2023, GreenSock. All rights reserved.
-   * Subject to the terms at https://greensock.com/standard-license or for
-   * Club GreenSock members, the agreement issued with that membership.
+   * @license Copyright 2008-2024, GreenSock. All rights reserved.
+   * Subject to the terms at https://gsap.com/standard-license or for
+   * Club GSAP members, the agreement issued with that membership.
    * @author: Jack Doyle, jack@greensock.com
   *)
 
-gsap/ScrollTrigger.js:
+@gsap/business/ScrollTrigger.js:
   (*!
-   * ScrollTrigger 3.12.2
-   * https://greensock.com
+   * ScrollTrigger 3.12.5
+   * https://gsap.com
    *
-   * @license Copyright 2008-2023, GreenSock. All rights reserved.
-   * Subject to the terms at https://greensock.com/standard-license or for
-   * Club GreenSock members, the agreement issued with that membership.
+   * @license Copyright 2008-2024, GreenSock. All rights reserved.
+   * Subject to the terms at https://gsap.com/standard-license or for
+   * Club GSAP members, the agreement issued with that membership.
+   * @author: Jack Doyle, jack@greensock.com
+  *)
+
+@gsap/business/DrawSVGPlugin.js:
+  (*!
+   * DrawSVGPlugin 3.12.5
+   * https://gsap.com
+   *
+   * @license Copyright 2008-2024, GreenSock. All rights reserved.
+   * Subject to the terms at https://gsap.com/standard-license or for
+   * Club GSAP members, the agreement issued with that membership.
    * @author: Jack Doyle, jack@greensock.com
   *)
 */

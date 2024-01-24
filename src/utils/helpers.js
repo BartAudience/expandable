@@ -1,6 +1,16 @@
 import gsap from "gsap";
 
 export function imageSequence(config) {
+    let imagesLoaded = 0;
+    const totalImages = 99;
+    const imageLoaded = () => {
+        imagesLoaded++;
+
+        if (imagesLoaded === totalImages) {
+            window.imageLoader.registerImageLoad();
+        }
+    };
+
     let playhead = { frame: 0 },
         ctx = gsap.utils.toArray(config.canvas)[0].getContext("2d"),
         onUpdate = config.onUpdate,
@@ -38,9 +48,13 @@ export function imageSequence(config) {
     images = config.urls.map((url, i) => {
         let img = new Image();
         img.src = url;
+        img.onload = imageLoaded;
         i || (img.onload = updateImage);
         return img;
     });
+
+    window.imageLoader.addImages(config.urls.length);
+
     return gsap.to(playhead, {
         frame: images.length - 1,
         ease: "none",

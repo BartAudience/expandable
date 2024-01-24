@@ -9,8 +9,8 @@ dependencies:
     specifier: ^0.39.2
     version: 0.39.2
   gsap:
-    specifier: ^3.12.2
-    version: 3.12.2
+    specifier: npm:@gsap/business@^3.12.5
+    version: /@gsap/business@3.12.5
   swiper:
     specifier: ^10.1.0
     version: 10.1.0
@@ -550,6 +550,10 @@ packages:
     dependencies:
       typescript: 5.1.6
     dev: true
+
+  /@gsap/business@3.12.5:
+    resolution: {integrity: sha512-MaoS/j4c+ZHCzkA0C1hWah3E0PTBOaevgJCD4ccad7FePaFcVyC1RSXi67GZQNntMTb03crXB+8CKXL490L6GQ==}
+    dev: false
 
   /@humanwhocodes/config-array@0.11.10:
     resolution: {integrity: sha512-KVVjQmNUepDVGXNuoRRdmmEjruj0KfiGSbS8LVc12LMsWDQzRXJ0qdhN8L8uUigKpfEHRhlaQFY0ib1tnUbNeQ==}
@@ -1639,10 +1643,6 @@ packages:
   /graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
     dev: true
-
-  /gsap@3.12.2:
-    resolution: {integrity: sha512-EkYnpG8qHgYBFAwsgsGEqvT1WUidX0tt/ijepx7z8EUJHElykg91RvW1XbkT59T0gZzzszOpjQv7SE41XuIXyQ==}
-    dev: false
 
   /hard-rejection@2.1.0:
     resolution: {integrity: sha512-VIZB+ibDhx7ObhAe7OVtoEbuP4h/MuOTHJ+J8h/eBXotJYl0fBgR72xDFCKgIh22OJZIOVNxBMWuhAr10r8HdA==}

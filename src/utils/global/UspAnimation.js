@@ -42,7 +42,7 @@ export const uspAnimation = () => {
             }
 
             imageSequence({
-                urls: Array.from({ length: numImages }, (_, k) => `https://onscroll-demo.vercel.app/WebP_Export_Srollanim_USP/2023032_USP_Scrollanim_${String(i * numImages + k).padStart(5, "0")}.webp`),
+                urls: Array.from({ length: numImages }, (_, k) => `https://expandable.ams3.digitaloceanspaces.com/frames/WebP_Export_Srollanim_USP/2023032_USP_Scrollanim_${String(i * numImages + k).padStart(5, "0")}.webp`),
                 canvas, // <canvas> object to draw images to
                 parentContainer,
                 scrollTrigger: {
@@ -65,7 +65,7 @@ export const uspAnimation = () => {
             }
 
             imageSequence({
-                urls: Array.from({ length: numImages }, (_, i) => `https://onscroll-demo.vercel.app/WebP_Export_Srollanim_USP/2023032_USP_Scrollanim_${String(i).padStart(5, "0")}.webp`),
+                urls: Array.from({ length: numImages }, (_, i) => `https://expandable.ams3.digitaloceanspaces.com/frames/WebP_Export_Srollanim_USP/2023032_USP_Scrollanim_${String(i).padStart(5, "0")}.webp`),
                 canvas, // <canvas> object to draw images to
                 parentContainer,
                 scrollTrigger: {

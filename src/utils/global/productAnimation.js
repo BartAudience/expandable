@@ -61,7 +61,7 @@ export const productAnimation = (name) => {
     mm.add("(min-width: 992px)", () => {
 
         imageSequence({
-            urls: Array.from({ length: numImages }, (_, i) => `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
+            urls: Array.from({ length: numImages }, (_, i) => `https://expandable.ams3.digitaloceanspaces.com/frames/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
             canvas: "#onscroll-products", // <canvas> object to draw images to
             scrollTrigger: {
                 trigger: ".logo-header_component",
@@ -77,7 +77,7 @@ export const productAnimation = (name) => {
     mm.add("(max-width: 991px)", () => {
 
         imageSequence({
-            urls: Array.from({ length: numImages }, (_, i) => `https://onscroll-demo.vercel.app/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
+            urls: Array.from({ length: numImages }, (_, i) => `https://expandable.ams3.digitaloceanspaces.com/frames/WebP_Export/2023032_Markets_Scroll_Anim_${String(i).padStart(5, "0")}.webp`),
             canvas: "#onscroll-products", // <canvas> object to draw images to
             scrollTrigger: {
                 trigger: ".logo-header_component",

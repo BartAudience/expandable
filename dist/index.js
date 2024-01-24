@@ -12613,7 +12613,7 @@
             delay: 1
           });
           tl.to(pageLoaderWrapper, {
-            yPercent: -100,
+            yPercent: 100,
             ease: "power3.inOut",
             duration: 1.5,
             onComplete: () => {

@@ -1,5 +1,11 @@
 # @zuid/expendable
 
+## 0.4.6
+
+### Patch Changes
+
+- 9ec3b92: reverse
+
 ## 0.4.5
 
 ### Patch Changes

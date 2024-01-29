@@ -1,5 +1,11 @@
 # @zuid/expendable
 
+## 0.4.7
+
+### Patch Changes
+
+- 9ed415f: usp loop
+
 ## 0.4.6
 
 ### Patch Changes

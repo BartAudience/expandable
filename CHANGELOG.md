@@ -1,5 +1,11 @@
 # @zuid/expendable
 
+## 0.4.9
+
+### Patch Changes
+
+- c604a3a: btn fix
+
 ## 0.4.8
 
 ### Patch Changes

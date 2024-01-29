@@ -11,6 +11,7 @@ import { hoverAnimationCard } from './utils/markets-page/hoverAnimationCard';
 import { uspAnimation } from './utils/global/UspAnimation';
 import { productAnimation } from './utils/global/productAnimation';
 import { pageLoader } from './utils/global/pageLoader';
+import { uspLoop } from './utils/global/uspLoop';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
@@ -24,6 +25,7 @@ window.Webflow.push(() => {
   customMenuTheme();
   uspAnimation();
   productAnimation();
+  uspLoop();
 
   productSwipers();
   aboutSwiper();

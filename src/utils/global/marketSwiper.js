@@ -116,26 +116,31 @@ export const marketSwiper = () => {
   });
 
   $('.swiper-pagination-bullet').each(function () {
-    $(this).css('text-align', 'start');
+    this.style.display = 'flex';
+    this.style.alignItems = 'center';
+    this.style.justifyContent = 'center';
     $('.button_text', this).css('position', 'relative');
-    $(this).on('mouseover', function () {
-      $('.button_underline', this).css('background-color', '#292929');
-      //animate this underline width to 100% with ease with gsap
-      gsap.to($('.button_underline', this), {
-        duration: 0.3,
-        width: '100%',
-        ease: 'power2.inOut',
+    $('.button_text', this).css('text-align', 'center');
+    if (window.innerWidth > 1000) {
+      $(this).on('mouseover', function () {
+        $('.button_underline', this).css('background-color', '#292929');
+        //animate this underline width to 100% with ease with gsap
+        gsap.to($('.button_underline', this), {
+          duration: 0.3,
+          width: '100%',
+          ease: 'power2.inOut',
+        });
       });
-    });
 
-    $(this).on('mouseout', function () {
-      //animate this underline width to 100% with ease with gsap
-      gsap.to($('.button_underline', this), {
-        duration: 0.3,
-        width: '0%',
-        ease: 'power2.inOut',
+      $(this).on('mouseout', function () {
+        //animate this underline width to 100% with ease with gsap
+        gsap.to($('.button_underline', this), {
+          duration: 0.3,
+          width: '0%',
+          ease: 'power2.inOut',
+        });
       });
-    });
+    }
   });
 
 };

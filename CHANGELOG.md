@@ -1,5 +1,11 @@
 # @zuid/expendable
 
+## 0.4.8
+
+### Patch Changes
+
+- 5c9e0a3: fix
+
 ## 0.4.7
 
 ### Patch Changes

@@ -61,4 +61,5 @@ export const pageLoader = () => {
             this.totalImages += count;
         }
     };
+
 }

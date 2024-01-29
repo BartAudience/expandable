@@ -11932,7 +11932,7 @@
     const totalImages = 99;
     const imageLoaded = () => {
       imagesLoaded++;
-      if (imagesLoaded === totalImages) {
+      if (imagesLoaded === totalImages && window.imageLoader) {
         window.imageLoader.registerImageLoad();
       }
     };
@@ -11968,7 +11968,9 @@
       i || (img.onload = updateImage);
       return img;
     });
-    window.imageLoader.addImages(config3.urls.length);
+    if (window.imageLoader) {
+      window.imageLoader.addImages(config3.urls.length);
+    }
     return gsapWithCSS.to(playhead, {
       frame: images.length - 1,
       ease: "none",

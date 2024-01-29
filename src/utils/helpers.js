@@ -6,7 +6,7 @@ export function imageSequence(config) {
     const imageLoaded = () => {
         imagesLoaded++;
 
-        if (imagesLoaded === totalImages) {
+        if (imagesLoaded === totalImages && window.imageLoader) {
             window.imageLoader.registerImageLoad();
         }
     };
@@ -53,7 +53,9 @@ export function imageSequence(config) {
         return img;
     });
 
-    window.imageLoader.addImages(config.urls.length);
+    if (window.imageLoader) {
+        window.imageLoader.addImages(config.urls.length);
+    }
 
     return gsap.to(playhead, {
         frame: images.length - 1,

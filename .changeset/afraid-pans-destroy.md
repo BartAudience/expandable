@@ -1,0 +1,5 @@
+---
+'@zuid/expendable': patch
+---
+
+fix

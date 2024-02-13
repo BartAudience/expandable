@@ -7,7 +7,7 @@ export const productAnimation = (name) => {
     ScrollTrigger.defaults({
         markers: false,
     });
-
+    
     let mm = gsap.matchMedia();
 
     const animateElement = (triggerSelector, targetSelector) => {

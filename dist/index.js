@@ -12639,7 +12639,8 @@
   var uspLoop = () => {
     const elements = document.querySelectorAll(".features-tabs_link");
     const navOverlay = document.querySelector(".w-nav-overlay");
-    if (elements.length <= 0)
+    const featuresTab = document.querySelector(".features-tabs_component");
+    if (elements.length <= 0 || !featuresTab)
       return;
     let currentIndex = 1;
     let intervalId;
@@ -12652,11 +12653,7 @@
       if (!isPaused) {
         const elementId = `w-tabs-0-data-w-tab-${currentIndex}`;
         try {
-          const element = document.getElementById(elementId);
-          if (element && element.isInViewport) {
-            element.click();
-            console.log("click");
-          }
+          document.getElementById(elementId).click();
         } catch (error) {
           console.error(`Error clicking element with ID ${elementId}:`, error);
           clearInterval(intervalId);
@@ -12664,25 +12661,27 @@
         currentIndex = (currentIndex + 1) % elements.length;
       }
     }
-    intervalId = setInterval(clickElement, 4500);
     const tabPanes = document.querySelectorAll(".cases_tabs-content");
     tabPanes.forEach((element) => {
       element.addEventListener("mouseenter", () => isPaused = true);
       element.addEventListener("mouseleave", () => isPaused = false);
     });
-    let observer = new IntersectionObserver((entries, observer2) => {
+    let observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.isInViewport = true;
+          const progressBar = entry.target.querySelectorAll(".features-tabs_link-line_accent");
+          progressBar.forEach((progress) => {
+            if (progress.style.width === "100%") {
+              clickElement();
+            }
+          });
+          intervalId = setInterval(clickElement, 4500);
         } else {
-          entry.target.isInViewport = false;
+          clearInterval(intervalId);
         }
       });
     }, { threshold: [0.5] });
-    elements.forEach((element) => {
-      element.isInViewport = false;
-      observer.observe(element);
-    });
+    observer.observe(featuresTab);
   };
 
   // src/index.js

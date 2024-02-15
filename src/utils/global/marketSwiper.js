@@ -41,7 +41,7 @@ export const marketSwiper = () => {
       el: '.swiper-pagination',
       clickable: true,
       renderBullet: function (index, className) {
-        return '<a class="swiper-pagination-button ' + className + '"> <div class="button_text"> ' + menu[index] + ' <div class="button_underline" style="width: 0%; height: 1px;"></div> </div> </a>';
+        return '<button class="swiper-pagination-button ' + className + '"> <div class="button_text"> ' + menu[index] + ' <div class="button_underline" style="width: 0%; height: 1px;"></div> </div> </button>';
       },
     },
     // Navigation arrows

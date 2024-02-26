@@ -64,3 +64,12 @@ export function imageSequence(config) {
         scrollTrigger: config.scrollTrigger
     });
 }
+
+export function checkFirstVisit() {
+    if (localStorage.getItem("visited")) {
+        return false;
+    } else {
+        localStorage.setItem("visited", "true");
+        return true;
+    }
+}

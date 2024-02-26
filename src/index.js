@@ -12,6 +12,7 @@ import { uspAnimation } from './utils/global/UspAnimation';
 import { productAnimation } from './utils/global/productAnimation';
 import { pageLoader } from './utils/global/pageLoader';
 import { uspLoop } from './utils/global/uspLoop';
+import { RegionPopup } from './utils/global/RegionPopup';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
@@ -26,6 +27,7 @@ window.Webflow.push(() => {
   uspAnimation();
   productAnimation();
   uspLoop();
+  RegionPopup();
 
   productSwipers();
   aboutSwiper();

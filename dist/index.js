@@ -11983,6 +11983,14 @@
       scrollTrigger: config3.scrollTrigger
     });
   }
+  function checkFirstVisit() {
+    if (localStorage.getItem("visited")) {
+      return false;
+    } else {
+      localStorage.setItem("visited", "true");
+      return true;
+    }
+  }
 
   // src/utils/global/videoComponentAnimation.js
   var videoComponentAnimation = (name) => {
@@ -12684,6 +12692,17 @@
     observer.observe(featuresTab);
   };
 
+  // src/utils/global/RegionPopup.js
+  var RegionPopup = () => {
+    const firstVisit = checkFirstVisit();
+    if (firstVisit) {
+      const regionPopup = document.querySelector(".locale-modal_component");
+      const regionPopupInner = document.querySelector("#fs-modal-1-popup");
+      regionPopup.style.display = "block";
+      regionPopupInner.style.display = "flex";
+    }
+  };
+
   // src/index.js
   window.Webflow ||= [];
   window.Webflow.push(() => {
@@ -12696,6 +12715,7 @@
     uspAnimation();
     productAnimation();
     uspLoop();
+    RegionPopup();
     productSwipers();
     aboutSwiper();
     clientCasesSwiper();

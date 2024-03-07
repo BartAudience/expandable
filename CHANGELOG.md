@@ -1,5 +1,11 @@
 # @zuid/expendable
 
+## 0.4.14
+
+### Patch Changes
+
+- f4e23e3: yoo
+
 ## 0.4.13
 
 ### Patch Changes

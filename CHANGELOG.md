@@ -1,5 +1,11 @@
 # @zuid/expendable
 
+## 0.4.15
+
+### Patch Changes
+
+- 0dc22f2: y
+
 ## 0.4.14
 
 ### Patch Changes

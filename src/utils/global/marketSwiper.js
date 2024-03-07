@@ -7,8 +7,8 @@ export const marketSwiper = () => {
     'Sports & Hospitality',
     'Mobile Work & Learning',
     'Sales & Promotion',
-    'Events & Roadshow',
     'Film & Production Support',
+    'Events & Roadshow',
     'Living & LIfestyle',
   ];
 

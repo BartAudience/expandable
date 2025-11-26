@@ -10,6 +10,7 @@ export const marketSwiper = () => {
     'Film & Production Support',
     'Events & Roadshow',
     'Living & LIfestyle',
+    'Defence & Security',
   ];
 
   var currentSlideIndex = 0; // Initialize with the first slide index
